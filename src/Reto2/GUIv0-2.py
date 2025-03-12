@@ -15,6 +15,11 @@ saved_cohorts_dir = "./src/Reto2/saved-cohorts"
 cohortes = listar_carpetas(saved_cohorts_dir)
 cohortes_guardados = {}
 
+# Variables globales para el cohorte actual y los IDs extraídos
+current_cohort = None
+cohort_ids = []
+
+
 # ---------------------------
 # Funciones para manejo de datos y LLM
 # ---------------------------
@@ -98,17 +103,17 @@ def on_cohort_select(event):
     import os
     import re
     from aux_func_GUI import leer_lineas_no_vacias
+    global current_cohort, cohort_ids
 
-    global cohort_ids
-    seleccion = listbox_cohortes.curselection()
-    if not seleccion:
+    widget = event.widget
+    index = widget.nearest(event.y)
+    if index not in widget.curselection():
         return
 
-    indice = seleccion[0]
-    cohorte_nombre = listbox_cohortes.get(indice)
-    cohorte_path = os.path.join(saved_cohorts_dir, cohorte_nombre)
+    current_cohort = widget.get(index)
+    cohorte_path = os.path.join(saved_cohorts_dir, current_cohort)
 
-    # Leer las plantillas del cohorte y añadirlas al listbox de plantillas
+    # Leer las plantillas específicas del cohorte y añadirlas al listbox de plantillas
     plantillas_file = os.path.join(cohorte_path, "cohort_templates.txt")
     cohort_templates = leer_lineas_no_vacias(plantillas_file)
     for plantilla in cohort_templates:
@@ -132,20 +137,55 @@ def on_cohort_select(event):
     else:
         cohort_ids = []
 
-    print("Cohorte seleccionado:", cohorte_nombre)
+    print("Cohorte seleccionado:", current_cohort)
     print("Plantillas añadidas:", cohort_templates)
     print("IDs extraídos:", cohort_ids)
 
 
 def exit_cohort():
-    global cohort_ids
-    # Limpiar la variable global de IDs del cohorte
+    global current_cohort, cohort_ids
     cohort_ids = []
-    # Limpiar el listbox de plantillas y recargar los templates por defecto
+    current_cohort = None
     listbox_templates.delete(0, tk.END)
     for t in templates:
         listbox_templates.insert(tk.END, t)
     print("Se ha salido del cohorte y se han cargado los templates por defecto.")
+
+
+def add_template():
+    from tkinter import simpledialog, messagebox
+    import os
+    global current_cohort
+
+    # Solicitar al usuario el texto de la nueva plantilla
+    nueva_plantilla = simpledialog.askstring("Nueva Plantilla", "Introduce el texto de la nueva plantilla:")
+    if not nueva_plantilla:
+        return
+
+    # Si se está en un cohorte (current_cohort no es None), preguntar si se desea agregar al cohorte actual
+    if current_cohort is not None:
+        respuesta = messagebox.askyesno("Agregar a Cohorte", "¿Deseas agregar esta plantilla al cohorte actual?")
+        if respuesta:
+            cohorte_path = os.path.join(saved_cohorts_dir, current_cohort)
+            plantilla_file = os.path.join(cohorte_path, "cohort_templates.txt")
+            try:
+                with open(plantilla_file, "a", encoding="utf-8") as f:
+                    f.write(nueva_plantilla + "\n")
+                listbox_templates.insert(tk.END, nueva_plantilla)
+                messagebox.showinfo("Éxito", "Plantilla agregada al cohorte actual.")
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo agregar la plantilla al cohorte: {e}")
+            return
+
+    # Si no se está en un cohorte o se decide no agregarlo al cohorte, agregar al fichero de templates del usuario
+    try:
+        with open(template_file, "a", encoding="utf-8") as f:
+            f.write(nueva_plantilla + "\n")
+        templates.append(nueva_plantilla)
+        listbox_templates.insert(tk.END, nueva_plantilla)
+        messagebox.showinfo("Éxito", "Plantilla agregada a los templates de usuario.")
+    except Exception as e:
+        messagebox.showerror("Error", f"No se pudo agregar la plantilla a los templates del usuario: {e}")
 
 
 # ---------------------------
@@ -188,11 +228,16 @@ pw_left = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg="#f0f0f0", sashwi
 pw_horizontal.add(pw_left, width=300)
 
 # Sección de plantillas
+
 frame_templates = ttk.Frame(pw_left, padding=10)
 pw_left.add(frame_templates, height=200)
 
 label_templates = ttk.Label(frame_templates, text="Plantillas:")
 label_templates.pack(anchor="w", padx=5, pady=(0,5))
+
+# Agregar el botón de "Añadir Plantilla" en el frame de plantillas (por ejemplo, debajo del listbox de plantillas)
+btn_add_template = ttk.Button(frame_templates, text="+", command=add_template)
+btn_add_template.pack(pady=5)
 
 listbox_templates = Listbox(frame_templates, height=10, font=("Helvetica", 10))
 listbox_templates.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
