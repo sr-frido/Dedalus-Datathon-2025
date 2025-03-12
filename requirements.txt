@@ -12,5 +12,3 @@ python-dotenv
 
 
 pandas
-torch
-typeguard

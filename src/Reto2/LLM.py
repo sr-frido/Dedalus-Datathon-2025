@@ -12,6 +12,7 @@ client = openai.OpenAI(
     base_url="https://litellm.dccp.pbu.dedalus.com"
 )
 
+# Código para la conversión a sql hecha por el LLM de openai
 def convertir_a_sql(consulta_natural, archivo_csv):
     """
     Usa el LLM para convertir una consulta en lenguaje natural a SQL,
@@ -52,6 +53,7 @@ def convertir_a_sql(consulta_natural, archivo_csv):
     # Devolver la consulta SQL generada
     return response.choices[0].message.content.strip()
 
+'''
 # Ejemplo de prueba con una consulta en lenguaje natural
 consulta = "Pacientes con alergia a los frutos secos diagnosticados hace más de una semana"
 
@@ -67,3 +69,5 @@ sql_generado = convertir_a_sql(consulta, csv_file)
 # Imprimir la consulta SQL generada por el LLM
 print("Consulta SQL generada:\n")
 print(sql_generado)
+
+'''
