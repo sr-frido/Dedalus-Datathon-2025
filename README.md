@@ -19,8 +19,8 @@ Este proyecto forma parte de la Datathon de Dedalus y tiene como objetivo el des
  ┣ 📂 src                                   # Código fuente
     ┗ 📂 Reto2
         ┗ 📜 GUI.py
- ┣ 📜 README.md          # Documentación del proyecto
- ┗ 📜 requirements.txt   # Dependencias del proyecto
+ ┣ 📜 README.md                             # Documentación del proyecto
+ ┗ 📜 requirements.txt                      # Dependencias del proyecto
 ```
 
 ---
