@@ -18,7 +18,12 @@ cursor = conn.cursor()
 df.to_sql('pacientes', conn, index=False, if_exists='replace')
 
 # Ejecutar una consulta SQL en la tabla
-consulta = "SELECT * FROM pacientes WHERE PacienteId = 22"
+consulta = " SELECT * " \
+"FROM pacientes " \
+"WHERE Codigo_SNOMED = '91934008' " \
+"AND Descripcion LIKE '%frutos secos%' " \
+"AND date(Fecha_diagnostico) <= date('now', '-7 days'); "
+
 cursor.execute(consulta)
 
 # Mostrar los resultados

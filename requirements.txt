@@ -9,3 +9,8 @@ openai
 transformers
 tk
 python-dotenv
+
+
+pandas
+torch
+typeguard
