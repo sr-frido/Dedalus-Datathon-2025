@@ -4,17 +4,16 @@ from tkinter import filedialog, scrolledtext, messagebox, Listbox
 from tkinter import ttk
 import pandas as pd
 import matplotlib.pyplot as plt
+from aux_func_GUI import leer_lineas_no_vacias, listar_carpetas
 
 # ---------------------------
 # Configuración global y datos
 # ---------------------------
-cohortes = {}
+template_file = "./src/Reto2/user-templates.txt"
+templates = leer_lineas_no_vacias(template_file)
+saved_cohorts_dir = "./src/Reto2/saved-cohorts"
+cohortes = listar_carpetas(saved_cohorts_dir)
 cohortes_guardados = {}
-templates = [
-    "Analiza la distribución de edades en la cohorte.",
-    "¿Cuál es el promedio de estancias hospitalarias?",
-    "Resumen de diagnósticos más frecuentes."
-]
 
 # ---------------------------
 # Funciones para manejo de datos y LLM
@@ -95,6 +94,60 @@ def on_template_select(event):
         input_text.delete("1.0", tk.END)
         input_text.insert(tk.END, template)
 
+def on_cohort_select(event):
+    import os
+    import re
+    from aux_func_GUI import leer_lineas_no_vacias
+
+    global cohort_ids
+    seleccion = listbox_cohortes.curselection()
+    if not seleccion:
+        return
+
+    indice = seleccion[0]
+    cohorte_nombre = listbox_cohortes.get(indice)
+    cohorte_path = os.path.join(saved_cohorts_dir, cohorte_nombre)
+
+    # Leer las plantillas del cohorte y añadirlas al listbox de plantillas
+    plantillas_file = os.path.join(cohorte_path, "cohort_templates.txt")
+    cohort_templates = leer_lineas_no_vacias(plantillas_file)
+    for plantilla in cohort_templates:
+        listbox_templates.insert(tk.END, plantilla)
+
+    # Leer el log del cohorte para extraer los IDs
+    log_file = os.path.join(cohorte_path, "cohort_log.txt")
+    lineas = leer_lineas_no_vacias(log_file)
+    contenido = " ".join(lineas)
+    match = re.search(r"\{([^}]+)\}", contenido)
+    if match:
+        ids_str = match.group(1)
+        ids_lista = [valor.strip() for valor in ids_str.split(",") if valor.strip()]
+        ids_convertidos = []
+        for valor in ids_lista:
+            try:
+                ids_convertidos.append(int(valor))
+            except ValueError:
+                ids_convertidos.append(valor)
+        cohort_ids = ids_convertidos
+    else:
+        cohort_ids = []
+
+    print("Cohorte seleccionado:", cohorte_nombre)
+    print("Plantillas añadidas:", cohort_templates)
+    print("IDs extraídos:", cohort_ids)
+
+
+def exit_cohort():
+    global cohort_ids
+    # Limpiar la variable global de IDs del cohorte
+    cohort_ids = []
+    # Limpiar el listbox de plantillas y recargar los templates por defecto
+    listbox_templates.delete(0, tk.END)
+    for t in templates:
+        listbox_templates.insert(tk.END, t)
+    print("Se ha salido del cohorte y se han cargado los templates por defecto.")
+
+
 # ---------------------------
 # Configuración de la ventana principal y estilos
 # ---------------------------
@@ -116,10 +169,10 @@ style.configure("TButton", font=("Helvetica", 10), padding=5)
 frame_superior = ttk.Frame(root, padding=10)
 frame_superior.pack(fill=tk.X)
 
-btn_cargar = ttk.Button(frame_superior, text="Cargar Datos (CSV)", command=cargar_datos)
+btn_cargar = ttk.Button(frame_superior, text="Cargar Datos", command=cargar_datos)
 btn_cargar.pack(side=tk.LEFT, padx=5)
 
-btn_guardar = ttk.Button(frame_superior, text="Guardar Cohorte Ej.", command=guardar_cohorte)
+btn_guardar = ttk.Button(frame_superior, text="Guardar como Cohorte", command=guardar_cohorte)
 btn_guardar.pack(side=tk.LEFT, padx=5)
 
 # ---------------------------
@@ -148,15 +201,24 @@ for t in templates:
     listbox_templates.insert(tk.END, t)
 listbox_templates.bind("<<ListboxSelect>>", on_template_select)
 
+
 # Sección de cohortes guardados
 frame_cohortes = ttk.Frame(pw_left, padding=10)
 pw_left.add(frame_cohortes, height=200)
+
 
 label_cohortes = ttk.Label(frame_cohortes, text="Cohortes guardados:")
 label_cohortes.pack(anchor="w", padx=5, pady=(0,5))
 
 listbox_cohortes = Listbox(frame_cohortes, height=10, font=("Helvetica", 10))
 listbox_cohortes.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+for t in cohortes:
+    listbox_cohortes.insert(tk.END, t)
+listbox_cohortes.bind("<<ListboxSelect>>", on_cohort_select)
+
+btn_exit_cohort = ttk.Button(frame_cohortes, text="Salir Cohorte", command=exit_cohort)
+btn_exit_cohort.pack(pady=5)
 
 # ---------------------------
 # PANEL DERECHO: PanedWindow vertical para entrada, salida y gráficos
@@ -184,7 +246,7 @@ btn_analizar.pack(fill=tk.X, padx=5, pady=5)
 btn_enviar = ttk.Button(frame_medio_derecha, text="Enviar a LLM", command=enviar_a_llm)
 btn_enviar.pack(fill=tk.X, padx=5, pady=5)
 
-label_output = ttk.Label(frame_medio_derecha, text="Respuesta del LLM:")
+label_output = ttk.Label(frame_medio_derecha, text="Respuesta del Sistema:")
 label_output.pack(anchor="w", padx=5, pady=(10,5))
 
 output_text = scrolledtext.ScrolledText(frame_medio_derecha, width=80, height=5, state=tk.DISABLED, font=("Helvetica", 10))
