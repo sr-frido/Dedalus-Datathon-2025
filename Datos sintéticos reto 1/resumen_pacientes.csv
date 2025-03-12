@@ -1,0 +1,11 @@
+PacienteID,Nombre,Edad,Sexo,Alergias,MotivoIngreso,DiagnosticoPrincipal,CondicionesPrevias,FechaIngreso,Servicio,EstadoAlIngreso
+1,Juan Pérez,68,Masculino,Ninguna conocida,"Fiebre alta y tos productiva",233604007,"EPOC (fumador crónico), Hipertensión arterial","01/05/2023",Neumología,"Estable, disnea moderada"
+2,María López,75,Femenino,Penicilina,"Dolor torácico opresivo irradiado a brazo izquierdo",22298006,"Hipertensión arterial, hipercolesterolemia","10/07/2023",Cardiología,"Hipotensa, diaforética (PA 90/60)"
+3,Carlos García,22,Masculino,Ninguna,"Polidipsia, poliuria, vómitos y confusión",420422005,"Diabetes mellitus tipo 1 mal controlada","20/09/2023",UCI,"Deshidratación severa, respiración de Kussmaul"
+4,Lucía Ramírez,30,Femenino,Sulfonamidas,"Dolor agudo en fosa ilíaca derecha, fiebre y vómitos",74400008,"Sin antecedentes médicos relevantes","05/08/2023","Cirugía General","Dolor abdominal severo, febril"
+5,Miguel Rodríguez,60,Masculino,Ninguna conocida,"Disnea aguda en reposo, ortopnea, edema en miembros inferiores",42343007,"Hipertensión arterial, fibrilación auricular crónica","12/04/2023","Medicina Interna","Taquipneico, SatO2 82% al aire ambiente"
+6,Ana Gómez,50,Femenino,Ibuprofeno,"Fiebre alta, taquicardia y bajo nivel de conciencia",91302008,"Diabetes mellitus tipo 2, nefrolitiasis recurrente","30/10/2023",UCI,"Hipotensa (PA 75/45), confusa (shock séptico)"
+7,Pedro Álvarez,78,Masculino,Ninguna,"Déficit motor súbito en hemicuerpo derecho y afasia",230690007,"Hipertensión arterial, diabetes mellitus tipo 2","01/03/2023",Neurología,"Consciente, hemiparesia derecha, afasia de Broca"
+8,Rosa Jiménez,65,Femenino,Penicilina,"Disnea en aumento, tos productiva con esputo purulento",195951007,"EPOC GOLD III (exfumadora), Hipertensión arterial","18/06/2023",Neumología,"Taquipneica, sibilancias, SatO2 85% (AA)"
+9,Javier Santos,18,Masculino,"Ácaros del polvo; pólenes","Crisis asmática severa con sibilancias y uso de músculos accesorios",195967001,"Asma desde la niñez, rinitis alérgica","11/02/2023",Neumología,"Taquipneico, sibilancias audibles, habla entrecortada"
+10,Alejandro Ruiz,46,Masculino,Ninguna,"Dolor epigástrico intenso irradiado a espalda, náuseas y vómitos",197456007,"Hipertrigliceridemia, consumo crónico de alcohol","15/11/2023",Gastroenterología,"Dolor intenso, taquicárdico, vómitos"

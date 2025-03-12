@@ -1,0 +1,54 @@
+PacienteID,Medicamento,Dosis,Via
+1,Ceftriaxona,2 g,IV cada 24h
+1,Azitromicina,500 mg,VO cada 24h
+1,Salbutamol,5 mg,Nebulizado c/6h
+1,Paracetamol,1 g,VO c/8h
+2,Clopidogrel,75 mg,VO diario
+2,Enoxaparina,60 mg,SC c/12h
+2,Nitroglicerina,5 µg/min,IV perfusión
+2,Morfina,4 mg,IV según necesidad
+2,Atorvastatina,80 mg,VO nocte
+2,Bisoprolol,2.5 mg,VO diario
+3,Insulina regular,0.1 U/kg/h,IV perfusión
+3,Cloruro de potasio,20 mEq,IV c/4h
+3,Suero fisiológico,1000 ml,IV rápido
+3,Bicarbonato de sodio,50 mEq,IV una dosis
+3,Insulina glargina,20 U,SC nocte
+4,Ceftriaxona,2 g,IV c/24h
+4,Metronidazol,500 mg,IV c/8h
+4,Ketorolaco,30 mg,IV c/8h
+4,Metamizol,2 g,IV c/8h
+4,Ondansetrón,4 mg,IV c/8h (prn)
+5,Furosemida,40 mg,IV c/8h
+5,Enalapril,5 mg,VO c/12h
+5,Carvedilol,6.25 mg,VO c/12h
+5,Digoxina,0.25 mg,VO diario
+5,Nitroglicerina,10 µg/min,IV perfusión
+5,Oxígeno,5 L/min,Mascarilla
+6,Meropenem,1 g,IV c/8h
+6,Vancomicina,1 g,IV c/12h
+6,Norepinefrina,0.1 µg/kg/min,IV perfusión
+6,Solución salina 0.9%,1000 ml,IV rápido
+6,Paracetamol,1 g,IV c/6h
+6,Insulina rápida,6 U,SC c/6h
+7,Alteplasa,0.9 mg/kg,IV (dosis total)
+7,Enoxaparina,40 mg,SC c/24h
+7,Aspirina,100 mg,VO diario
+7,Atorvastatina,40 mg,VO diario
+7,Labetalol,10 mg,IV c/8h (prn)
+8,Salbutamol,5 mg,Nebulizado c/6h
+8,Ipratropio,0.5 mg,Nebulizado c/6h
+8,Metilprednisolona,40 mg,IV c/8h
+8,Levofloxacino,500 mg,IV c/24h
+8,Oxígeno,3 L/min,Puntas nasales
+9,Salbutamol,5 mg,Nebulizado c/4h
+9,Ipratropio,0.5 mg,Nebulizado c/4h
+9,Hidrocortisona,100 mg,IV c/6h
+9,Sulfato de magnesio,2 g,IV una dosis
+9,Adrenalina,0.5 mg,SC una dosis
+9,Oxygen,4 L/min,Mascarilla
+10,Ringer Lactato,1000 ml,IV c/8h
+10,Morfina,5 mg,IV c/4h (prn)
+10,Metoclopramida,10 mg,IV c/8h (prn)
+10,Omeprazol,40 mg,IV c/24h
+10,Ciprofloxacino,400 mg,IV c/12h
