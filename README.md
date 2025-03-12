@@ -68,6 +68,40 @@ Si deseas contribuir al proyecto, sigue estos pasos:
 
 5. **Crear un Pull Request (PR)** en GitHub y solicitar revisión.
 
+## 🤝 Hacer el merge con la rama main
+
+1. **Cambiar a la rama main**
+    ```bash
+   git checkout main
+   ```
+
+2. **Descarga los últimos cambios del repositorio (para evitar conflictos)**
+    ```bash
+   git pull origin main
+   ```
+
+3. **Fusionar tu rama en main**
+    ```bash
+   git merge feature/nueva-funcionalidad
+   ```
+
+4. **Si hay conflictos, resuélvelos manualmente en los archivos afectados, luego haz:**
+    ```bash
+   git add .
+   git commit -m "Resolviendo conflictos en merge"
+    ```
+
+5. **Sube los cambios a GitHub**
+    ```bash
+   git push origin main
+   ```
+
+6. **(Opcional) Elimina la rama si ya no es necesaria**
+    ```bash
+    git branch -d feature/nueva-funcionalidad
+    git push origin --delete feature/nueva-funcionalidad  # Borra la rama en GitHub
+   ```
+
 ### Reglas de Contribución
 ✅ Usa nombres de rama descriptivos (`feature/nueva-funcionalidad` o `fix/arreglo-bug`)
 ✅ Escribe commits claros y concisos
