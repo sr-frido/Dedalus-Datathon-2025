@@ -228,19 +228,22 @@ pw_left = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg="#f0f0f0", sashwi
 pw_horizontal.add(pw_left, width=300)
 
 # Sección de plantillas
-
 frame_templates = ttk.Frame(pw_left, padding=10)
 pw_left.add(frame_templates, height=200)
 
-label_templates = ttk.Label(frame_templates, text="Plantillas:")
-label_templates.pack(anchor="w", padx=5, pady=(0,5))
+# Crear un frame para colocar la etiqueta y el botón en la misma línea
+frame_header = ttk.Frame(frame_templates)
+frame_header.pack(fill=tk.X)
 
-# Agregar el botón de "Añadir Plantilla" en el frame de plantillas (por ejemplo, debajo del listbox de plantillas)
-btn_add_template = ttk.Button(frame_templates, text="+", command=add_template)
-btn_add_template.pack(pady=5)
+label_templates = ttk.Label(frame_header, text="Plantillas:")
+label_templates.pack(side=tk.LEFT, padx=(0, 5))
+
+btn_add_template = ttk.Button(frame_header, text="+", command=add_template, width=3)
+btn_add_template.pack(side=tk.LEFT)
 
 listbox_templates = Listbox(frame_templates, height=10, font=("Helvetica", 10))
 listbox_templates.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
 
 for t in templates:
     listbox_templates.insert(tk.END, t)
