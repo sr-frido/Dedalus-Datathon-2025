@@ -13,7 +13,7 @@ Este proyecto forma parte de la Datathon de Dedalus y tiene como objetivo el des
 
 ## 📂 Estructura del Proyecto
 ```
-📦 chatbox-llm-cohortes
+📦 Dedalus-Datathon-2025
  ┣ 📂 Datos sintéticos reto 1               # Datos de entrenamiento y prueba del reto 1
  ┣ 📂 Datos sintéticos reto 2               # Datos de entrenamiento y prueba del reto 2
  ┣ 📂 src                                   # Código fuente
