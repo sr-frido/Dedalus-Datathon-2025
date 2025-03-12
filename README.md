@@ -1,2 +1,88 @@
-# Dedalus-Datathon-2025
-Dedalus-Datathon-2025
+# 📌 Proyecto Chatbox LLM para Generación de Cohortes
+
+## 📖 Descripción
+Este proyecto forma parte de la Datathon de Dedalus y tiene como objetivo el desarrollo de un **chatbox basado en modelos de lenguaje (LLM)** para la **generación de cohortes de pacientes** a partir de datos clínicos. Utilizando inteligencia artificial, nuestro sistema permitirá a los profesionales de la salud crear grupos de pacientes con características específicas mediante consultas en lenguaje natural.
+
+## 🚀 Tecnologías
+- **Lenguaje de programación**: Python
+- **Frameworks y librerías**: A determinar
+- **Bases de datos**: A determinar 
+- **Herramientas de desarrollo**: Git
+
+---
+
+## 📂 Estructura del Proyecto
+```
+📦 chatbox-llm-cohortes
+ ┣ 📂 Datos sintéticos reto 1               # Datos de entrenamiento y prueba del reto 1
+ ┣ 📂 Datos sintéticos reto 2               # Datos de entrenamiento y prueba del reto 2
+ ┣ 📂 src                                   # Código fuente
+    ┗ 📂 Reto2
+        ┗ 📜 GUI.py
+ ┣ 📜 README.md          # Documentación del proyecto
+ ┗ 📜 requirements.txt   # Dependencias del proyecto
+```
+
+---
+
+## 📌 Instalación y Configuración
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/sr-frido/Dedalus-Datathon-2025
+   cd Dedalus-Datathon-2025
+   ```
+
+2. **Crear un entorno virtual e instalar dependencias**
+   ```bash
+   python -m venv env-name
+   source env-name/bin/activate   # En Windows: env-name\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+---
+
+## 🤝 Contribución
+Si deseas contribuir al proyecto, sigue estos pasos:
+
+1. **Actualizar tu repositorio remoto**
+    ```bash
+   git pull
+   ```
+
+2. **Crear una nueva rama** para tu feature o fix:
+   ```bash
+   git checkout -b feature/nueva-funcionalidad
+   ```
+
+3. **Realizar cambios y commitearlos**
+   ```bash
+   git add .
+   git commit -m "Añadida nueva funcionalidad X"
+   ```
+
+4. **Subir los cambios y crear un Pull Request**
+   ```bash
+   git push origin feature/nueva-funcionalidad
+   ```
+
+5. **Crear un Pull Request (PR)** en GitHub y solicitar revisión.
+
+### Reglas de Contribución
+✅ Usa nombres de rama descriptivos (`feature/nueva-funcionalidad` o `fix/arreglo-bug`)
+✅ Escribe commits claros y concisos
+✅ Añade documentación si aplicas cambios significativos
+✅ No hacer push directamente a `main`
+
+---
+
+## 📄 Licencia
+Ninguna
+
+---
+
+## 📧 Contacto
+Si tienes dudas o sugerencias, contáctanos en [alfaro.jdd@gmail.com](mailto:alfaro.jdd@gmail.com).
+
+¡Gracias por contribuir a mejorar la salud con IA! 💡🚀
+
