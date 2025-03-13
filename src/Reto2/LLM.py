@@ -53,21 +53,24 @@ def convertir_a_sql(consulta_natural, archivo_csv):
     # Devolver la consulta SQL generada
     return response.choices[0].message.content.strip()
 
-'''
-# Ejemplo de prueba con una consulta en lenguaje natural
-consulta = "Pacientes con alergia a los frutos secos diagnosticados hace más de una semana"
+def analizar_prompt(input, peticion):
+    prompt = f"""
+    El siguiente prompt ha generado una sentencia sql:
 
-# Cargar el archivo CSV en un DataFrame de pandas
-ruta_base = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    Prompt: "{input}"
 
-# Construir la ruta completa al archivo 'cohorte_alegias.csv'
-csv_file = os.path.join(ruta_base, 'Datos sintéticos reto 2', 'cohorte_alegias.csv')
+    Sentencia sql: "{peticion}"
 
-# Generar la consulta SQL a partir del LLM
-sql_generado = convertir_a_sql(consulta, csv_file)
+    Aquí hay un ejemplo de las columnas de los datos
 
-# Imprimir la consulta SQL generada por el LLM
-print("Consulta SQL generada:\n")
-print(sql_generado)
+    Devuelve una respueste breve sobre el prompt, un párrafo no muy largo
+    """
 
-'''
+     # Realizar la solicitud al modelo
+    response = client.chat.completions.create(
+        model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0",  # Cambia al modelo permitido
+        messages=[{"role": "system", "content": "Eres un asistente que responde en una o dos lines a un usuario sobre una petición que ha realizado y una sentencia sql que ha generado otro LLM, el usuario no tiene ni idea de sql ni de bases de datos así que no des explicaciones sobre eso ."},
+                  {"role": "user", "content": prompt}]
+    )
+
+    return response.choices[0].message.content.strip()

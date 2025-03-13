@@ -10,5 +10,4 @@ transformers
 tk
 python-dotenv
 
-
 pandas
