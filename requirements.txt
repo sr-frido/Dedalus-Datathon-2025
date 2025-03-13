@@ -8,3 +8,6 @@ botocore
 openai
 transformers
 tk
+python-dotenv
+
+pandas
