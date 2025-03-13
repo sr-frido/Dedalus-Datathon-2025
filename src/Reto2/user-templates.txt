@@ -1,0 +1,3 @@
+Analiza la distribución de edades en la cohorte
+¿Cuál es el promedio de estancias hospitalarias
+Resumen de diagnósticos más frecuentes

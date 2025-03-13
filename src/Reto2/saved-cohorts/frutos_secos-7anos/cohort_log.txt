@@ -1,0 +1,5 @@
+"Sujetos con alergia a los frutos secos diagnosticada hace al menos 7 años"
+
+:{
+20, 26
+}:
