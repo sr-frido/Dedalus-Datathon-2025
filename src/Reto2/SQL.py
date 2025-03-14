@@ -18,7 +18,7 @@ cursor = conn.cursor()
 # Crear una tabla en SQLite a partir de las columnas del CSV
 df.to_sql('pacientes', conn, index=False, if_exists='replace')
 
-prompt = "Quiero ver todos los pacientes con diabetes"
+prompt = "Quiero ver la cantidad de los pacientes con alergia al polen diagnosticados hace mas de un año y menos de 5 y ademas alergicos a los cacahuetes"
 
 # Ejecutar una consulta SQL en la tabla
 consulta = convertir_a_sql(prompt,csv_file)
