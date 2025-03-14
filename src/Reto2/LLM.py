@@ -15,11 +15,6 @@ client = openai.OpenAI(
 # Path de la base de datos de los pacientes.
 path_to_database = os.path.join(os.path.dirname(__file__), "DataBase")
 
-
-
-
-
-
 def analizar_prompt(input, peticion):
     prompt = f"""
     El siguiente prompt ha generado una sentencia sql:
@@ -71,7 +66,7 @@ def convertir_a_sql(consulta_natural):
     info_csv = obtener_info_csvs(path_to_database)
 
     prompt = f"""
-    Convierte la siguiente solicitud en una consulta SQL válida para una base de datos de pacientes:
+    Convierte la siguiente solicitud en una consulta sqlite3 válida para una base de datos de pacientes:
 
     Solicitud: "{consulta_natural}"
 
@@ -93,58 +88,8 @@ def convertir_a_sql(consulta_natural):
      # Realizar la solicitud al modelo
     response = client.chat.completions.create(
         model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0",  # Cambia al modelo permitido
-        messages=[{"role": "system", "content": "Eres un asistente experto en SQL."},
+        messages=[{"role": "system", "content": "Eres un asistente experto en sqlite3. Por defecto las sentencias mostraran todos losd atos sobre los pacientes a no ser que se especifique lo contrario. Si la consulta que te llega es la palabra Error entonces vas a devulver un codigo sql que no haga completamente nada"},
                   {"role": "user", "content": prompt}]
     )
 
     return(response.choices[0].message.content.strip())
-
-
-
-#Version inicial
-'''
-# Código para la conversión a sql hecha por el LLM de openai
-def convertir_a_sql(consulta_natural, archivo_csv):
-
-    """
-    Usa el LLM para convertir una consulta en lenguaje natural a SQL,
-    adaptado a las columnas de un archivo CSV.
-    """
-    # Cargar el archivo CSV para obtener las columnas dinámicamente
-    df = pd.read_csv(archivo_csv)
-    columnas = df.columns.tolist()
-
-    # Tomar las primeras 5 filas para mostrarle un ejemplo al modelo
-    ejemplo_filas = df.head().to_string(index=False)
-
-    # Crear una cadena con las columnas del archivo CSV
-    columnas_sql = "\n".join([f"- {col} (TEXT)" for col in columnas])
-
-    # Definir el prompt con las columnas dinámicas y un ejemplo de las filas
-    prompt = f"""
-    Convierte la siguiente solicitud en una consulta SQL válida para una base de datos de pacientes:
-
-    Solicitud: "{consulta_natural}"
-
-    La base de datos tiene la tabla 'pacientes' con las siguientes columnas:
-    {columnas_sql}
-
-    Aquí hay un ejemplo de las primeras filas de datos:
-    {ejemplo_filas}
-
-    Devuelve SOLO la consulta SQL sin explicaciones.
-    """
-
-    # Realizar la solicitud al modelo
-    response = client.chat.completions.create(
-        model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0",  # Cambia al modelo permitido
-        messages=[{"role": "system", "content": "Eres un asistente experto en SQL."},
-                  {"role": "user", "content": prompt}]
-    )
-
-    print(prompt)
-
-    # Devolver la consulta SQL generada
-    return response.choices[0].message.content.strip()'
-
-'''

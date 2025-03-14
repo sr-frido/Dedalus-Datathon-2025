@@ -2,6 +2,7 @@ import sqlite3
 import pandas as pd
 import os
 from LLM import *
+from prompt_enginering import *
 
 # Cargar todos los archivos CSV en un directorio y convertirlos a tablas en SQLite
 
@@ -24,10 +25,12 @@ for archivo in archivos_csv:
     df.to_sql(archivo.split('.')[0], conn, index=False, if_exists='replace')
 
 # Definir el prompt que queremos pasar al LLM
-prompt = "Quiero ver todos los pacientes con diabetes en orden de menor a mayor id"
+prompt = modificar_prompt("Que dia es hoy?")
 
 # Función para convertir el prompt en una consulta SQL
 consulta = convertir_a_sql(prompt)
+
+print(consulta)
 
 # Ejecutar la consulta SQL en la base de datos
 cursor.execute(consulta)
