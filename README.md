@@ -35,7 +35,7 @@ Este proyecto forma parte de la Datathon de Dedalus y tiene como objetivo el des
 
 2. **Crear un entorno virtual e instalar dependencias**
    ```bash
-   python -m venv env-name
+   python3 -m venv env-name
    source env-name/bin/activate   # En Windows: env-name\Scripts\activate
    pip install -r requirements.txt
    ```
