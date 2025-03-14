@@ -1,0 +1,101 @@
+PacienteID,Fecha de inicio,Fecha de fin,Código,Nombre,Dosis,Frecuencia,Vía de administración
+1,2018-06-01,,C09AA03,Lisinopril,10 mg,1 vez al día,oral
+1,2019-01-15,,C03AA03,Hidroclorotiazida,25 mg,1 vez al día,oral
+1,2018-06-05,,C10AA05,Atorvastatina,20 mg,1 vez al día,oral
+1,2018-06-01,,B01AC06,Ácido acetilsalicílico,100 mg,1 vez al día,oral
+2,2017-04-01,,A10BA02,Metformina,500 mg,2 veces al día,oral
+2,2020-11-01,,A10AE04,Insulina glargina,20 UI,1 vez al día,inyección
+2,2018-08-01,,C09CA01,Losartán,50 mg,1 vez al día,oral
+2,2017-04-01,,C10AA01,Simvastatina,20 mg,1 vez al día,oral
+3,2012-06-01,,R03AC02,Salbutamol (inhalador),100 mcg,cada 6 horas si es necesario,inhalación
+3,2012-06-02,,R03BA01,Beclometasona (inhalador),250 mcg,2 veces al día,inhalación
+3,2013-01-01,,R03DC03,Montelukast,10 mg,1 vez al día,oral
+4,2020-01-15,,H03AA01,Levotiroxina,50 mcg,1 vez al día,oral
+4,2020-02-01,2020-05-01,B03AA07,Sulfato ferroso,325 mg,1 vez al día,oral
+5,2019-05-10,2019-07-01,N06AB05,Paroxetina,20 mg,1 vez al día,oral
+5,2019-07-02,2020-07-01,N06AB06,Sertralina,50 mg,1 vez al día,oral
+6,2015-04-10,,B01AC06,Ácido acetilsalicílico,100 mg,1 vez al día,oral
+6,2015-04-15,,C09AA02,Enalapril,5 mg,2 veces al día,oral
+6,2015-04-20,,C07AB02,Metoprolol,50 mg,2 veces al día,oral
+6,2015-04-15,,C03CA01,Furosemida,40 mg,1 vez al día,oral
+6,2015-06-01,,C03DA01,Espironolactona,25 mg,1 vez al día,oral
+6,2015-04-15,,C10AA07,Rosuvastatina,20 mg,1 vez al día,oral
+7,2016-10-01,,L04AX03,Metotrexato,15 mg,1 vez por semana,oral
+7,2016-09-15,2017-03-15,H02AB07,Prednisona,10 mg,1 vez al día,oral
+7,2016-09-15,2016-12-01,M01AE01,Ibuprofeno,400 mg,3 veces al día,oral
+7,2018-01-01,,L04AB04,Adalimumab,40 mg,1 vez cada 2 semanas,inyección
+8,2018-01-10,,C08CA01,Amlodipino,5 mg,1 vez al día,oral
+8,2018-03-15,,C10AA03,Pravastatina,40 mg,1 vez al día,oral
+9,2021-05-20,,A02BC01,Omeprazol,20 mg,1 vez al día,oral
+9,2021-05-20,2021-06-10,A03FA03,Domperidona,10 mg,3 veces al día,oral
+10,2014-03-01,,R03BB04,Tiotropio (inhalador),18 mcg,1 vez al día,inhalación
+10,2014-03-01,,R03AC12,Salmeterol (inhalador),50 mcg,2 veces al día,inhalación
+10,2014-03-05,,R03BA05,Fluticasona (inhalador),250 mcg,2 veces al día,inhalación
+10,2015-06-01,2016-06-01,R03DX07,Roflumilast,500 mcg,1 vez al día,oral
+11,2018-09-10,,C09AA05,Ramipril,5 mg,1 vez al día,oral
+11,2020-01-10,,B03XA01,Epoetina alfa,4000 UI,1 vez por semana,inyección
+12,2010-06-01,,A10AB04,Insulina lispro,10 UI,3 veces al día,inyección
+12,2010-06-01,,A10AE05,Insulina detemir,20 UI,1 vez al día,inyección
+13,2010-01-01,2012-12-31,N03AF01,Carbamazepina,200 mg,2 veces al día,oral
+13,2013-01-01,,N03AX14,Levetiracetam,500 mg,2 veces al día,oral
+14,2019-07-01,,N02BE01,Paracetamol,500 mg,3 veces al día,oral
+14,2020-01-01,2020-02-15,M01AE02,Naproxeno,500 mg,2 veces al día,oral
+14,2021-01-01,2021-03-01,N02AX02,Tramadol,50 mg,2 veces al día,oral
+15,2021-02-01,,C07AA05,Propranolol,40 mg,2 veces al día,oral
+15,2021-01-01,,N02CC01,Sumatriptán,50 mg,según necesidad,oral
+16,2020-03-01,2020-06-30,R06AX13,Loratadina,10 mg,1 vez al día,oral
+16,2020-03-01,2020-06-30,R01AD08,Fluticasona (spray nasal),50 mcg,1 vez al día,intranasal
+16,2021-03-01,2021-06-30,R06AE07,Cetirizina,10 mg,1 vez al día,oral
+16,2021-03-01,2021-06-30,R01AD08,Fluticasona (spray nasal),50 mcg,1 vez al día,intranasal
+17,2022-11-10,2022-11-24,J01CR02,Amoxicilina/Ácido clavulánico,875/125 mg,2 veces al día,oral
+17,2022-11-10,2022-11-20,N02BE01,Paracetamol,500 mg,4 veces al día,oral
+18,2023-06-01,2023-06-07,J01XE01,Nitrofurantoína,100 mg,2 veces al día,oral
+18,2023-06-01,2023-06-05,G04BX06,Fenazopiridina,200 mg,3 veces al día,oral
+19,2021-09-10,,N06AB10,Escitalopram,10 mg,1 vez al día,oral
+19,2021-09-01,2021-12-01,N05BA12,Alprazolam,0.5 mg,2 veces al día,oral
+20,2019-04-01,2019-06-01,D07AC01,Betametasona (tópica),0.05%,2 veces al día,tópica
+20,2019-04-01,,D05AX02,Calcipotriol (tópico),50 mcg/g,2 veces al día,tópica
+21,2019-01-15,,N02BB02,Metamizol,575 mg,3 veces al día,oral
+21,2019-01-15,2019-02-15,N05BA01,Diazepam,5 mg,1 vez al día,oral
+21,2019-03-01,,N02BF01,Gabapentina,300 mg,3 veces al día,oral
+22,2018-02-05,,B01AC04,Clopidogrel,75 mg,1 vez al día,oral
+22,2018-03-01,,C03BA11,Indapamida,2.5 mg,1 vez al día,oral
+22,2018-03-01,,C09AA04,Perindopril,4 mg,1 vez al día,oral
+22,2018-02-05,,C10AA05,Atorvastatina,80 mg,1 vez al día,oral
+23,2019-08-10,,B01AF02,Apixabán,5 mg,2 veces al día,oral
+23,2019-08-10,,C07AB07,Bisoprolol,5 mg,1 vez al día,oral
+23,2019-08-15,2020-08-15,C01BD01,Amiodarona,200 mg,1 vez al día,oral
+24,2019-11-05,2020-11-05,H03BB02,Tiamazol,10 mg,1 vez al día,oral
+24,2019-11-05,2020-05-05,C07AA05,Propranolol,20 mg,2 veces al día,oral
+25,2015-09-15,,N04BA02,Levodopa/Carbidopa,100/25 mg,3 veces al día,oral
+25,2016-01-01,,N04BC05,Pramipexol,1 mg,3 veces al día,oral
+25,2015-09-15,2016-09-15,N04AA01,Trihexifenidilo,2 mg,2 veces al día,oral
+25,2017-07-01,,N04BX02,Entacapona,200 mg,3 veces al día,oral
+26,2018-07-10,,M05BA04,Alendronato,70 mg,1 vez por semana,oral
+26,2018-07-10,,A11CC05,Colecalciferol,1000 UI,1 vez al día,oral
+27,2020-06-10,,G04CA02,Tamsulosina,0.4 mg,1 vez al día,oral
+27,2020-06-10,,G04CB01,Finasterida,5 mg,1 vez al día,oral
+28,2022-08-01,2022-08-20,A02BC01,Omeprazol,20 mg,2 veces al día,oral
+28,2022-08-01,2022-08-20,J01FA09,Claritromicina,500 mg,2 veces al día,oral
+28,2022-08-01,2022-08-20,J01CA04,Amoxicilina,1 g,2 veces al día,oral
+29,2021-04-01,2021-04-14,M04AC01,Colchicina,0.6 mg,3 veces al día,oral
+29,2021-05-01,,M04AA01,Alopurinol,300 mg,1 vez al día,oral
+30,2020-01-10,,A07EC02,Mesalazina,1.5 g,1 vez al día,oral
+30,2021-01-01,,L04AX01,Azatioprina,50 mg,1 vez al día,oral
+30,2021-06-01,2021-08-01,H02AB07,Prednisona,40 mg,1 vez al día,oral
+31,2021-09-01,2021-11-01,N05CF02,Zolpidem,10 mg,1 vez al día,oral
+31,2021-07-01,,N05CH01,Melatonina,2 mg,1 vez al día,oral
+32,2019-03-01,2020-03-01,A08AB01,Orlistat,120 mg,3 veces al día,oral
+33,2021-05-01,2021-05-14,D07AA02,Hidrocortisona (tópica),1%,2 veces al día,tópica
+34,2022-04-01,2022-04-10,J05AB01,Aciclovir,800 mg,5 veces al día,oral
+35,2021-11-01,2021-11-07,J01MA12,Levofloxacino,500 mg,1 vez al día,oral
+35,2021-11-01,2021-11-10,H02AB07,Prednisona,30 mg,1 vez al día,oral
+36,2020-02-10,,C10AB05,Fenofibrato,160 mg,1 vez al día,oral
+37,2018-06-01,,B03BA01,Cianocobalamina,1000 mcg,1 vez al mes,inyección
+38,2017-01-01,,P01BA02,Hidroxicloroquina,200 mg,1 vez al día,oral
+38,2018-01-01,,L04AA06,Micofenolato mofetil,1 g,2 veces al día,oral
+38,2017-01-01,2018-01-01,H02AB07,Prednisona,20 mg,1 vez al día,oral
+39,2020-07-01,,G03BA03,Testosterona enantato,250 mg,1 vez cada 3 semanas,inyección
+40,2019-05-01,,S01ED01,Timolol (colirio),0.5%,2 veces al día,oftálmica
+41,2021-04-10,2021-05-10,S01GX09,Olopatadina (colirio),0.1%,2 veces al día,oftálmica
+42,2019-09-01,,G04BD04,Oxibutinina,5 mg,2 veces al día,oral
