@@ -6,6 +6,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from aux_func_GUI import leer_lineas_no_vacias, listar_carpetas
 
+#CAMBIAR NOMBRES EN EL FUTURO
+from LLM import *
+from prompt_enginering import *
+
 # ---------------------------
 # Configuración global y datos
 # ---------------------------
@@ -73,11 +77,11 @@ def llamar_a_llm_bedrock(prompt):
     """
     Placeholder para conexión real a AWS Bedrock o LiteLLM.
     """
-    respuesta_simulada = (
-        "Respuesta simulada del LLM.\n\n"
-        f"Prompt recibido:\n{prompt}"
-    )
-    return respuesta_simulada
+    consulta = preprocesar_prompt(prompt)
+
+    respuesta_LLM = analizar_prompt(prompt, consulta)
+
+    return respuesta_LLM
 
 def enviar_a_llm():
     prompt = input_text.get("1.0", tk.END).strip()
@@ -86,9 +90,12 @@ def enviar_a_llm():
         return
     
     respuesta = llamar_a_llm_bedrock(prompt)
+
+    print(respuesta)
     
     output_text.config(state=tk.NORMAL)
     output_text.delete("1.0", tk.END)
+    
     output_text.insert(tk.END, respuesta)
     output_text.config(state=tk.DISABLED)
 
@@ -297,7 +304,7 @@ btn_enviar.pack(fill=tk.X, padx=5, pady=5)
 label_output = ttk.Label(frame_medio_derecha, text="Respuesta del Sistema:")
 label_output.pack(anchor="w", padx=5, pady=(10,5))
 
-output_text = scrolledtext.ScrolledText(frame_medio_derecha, width=80, height=5, state=tk.DISABLED, font=("Helvetica", 10))
+output_text = scrolledtext.ScrolledText(frame_medio_derecha, width=80, height=5, state=tk.DISABLED, font=("Helvetica", 10), wrap="word")
 output_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 # Sección inferior: Área de gráficos o resultados visuales

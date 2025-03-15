@@ -12,7 +12,7 @@ client = openai.OpenAI(
     base_url="https://litellm.dccp.pbu.dedalus.com"
 )
 
-def modificar_prompt(prompt):
+def preprocesar_prompt(prompt):
 
     context="Eres un asistente experto en análisis de datos médicos. Tu tarea es reformular consultas informales o ambiguas de los usuarios en instrucciones claras y bien estructuradas para un sistema de generación de SQL. Solo escribe la sentencia procesada, nada más. Si la consulta no esta relacionada con peticiones a una base de datos de salud entonces vas a escribir la palabra Error"
     # Realizar la solicitud al modelo

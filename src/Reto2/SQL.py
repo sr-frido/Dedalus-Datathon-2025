@@ -25,7 +25,7 @@ for archivo in archivos_csv:
     df.to_sql(archivo.split('.')[0], conn, index=False, if_exists='replace')
 
 # Definir el prompt que queremos pasar al LLM
-prompt = modificar_prompt("Dame los pacientes mayores de edad")
+prompt = preprocesar_prompt("Dame los pacientes mayores de edad")
 
 # Función para convertir el prompt en una consulta SQL
 consulta = convertir_a_sql(prompt)
