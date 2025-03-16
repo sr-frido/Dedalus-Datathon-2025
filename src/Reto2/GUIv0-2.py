@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from aux_func_GUI import leer_lineas_no_vacias, listar_carpetas
 
 #CAMBIAR NOMBRES EN EL FUTURO
-from LLM import *
+from procesar_peticion import *
 from prompt_enginering import *
 
 # ---------------------------

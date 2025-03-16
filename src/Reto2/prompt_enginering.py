@@ -1,7 +1,7 @@
 import os
 import openai
 from dotenv import load_dotenv
-from LLM import *
+from Reto2.procesar_peticion import *
 
 # Cargar las variables de entorno
 load_dotenv()

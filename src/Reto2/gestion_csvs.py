@@ -1,7 +1,7 @@
 import sqlite3
 import pandas as pd
 import os
-from LLM import *
+from procesar_peticion import *
 from prompt_enginering import *
 
 # Cargar todos los archivos CSV en un directorio y convertirlos a tablas en SQLite
