@@ -36,9 +36,9 @@ current_cohort = None
 cohort_ids = []
 
 # Variables globales para info-output
-input = "Hola Mundo"
-sentencia = "Hola Mundo"
-dataSet = "Hola Mundo"
+input = "Aún no hay información"
+sentencia = "Aún no hay información"
+dataSet = "Aún no hay información"
 
 
 # ---------------------------
@@ -223,23 +223,23 @@ def abrir_info_output():
     """
     ventana_info = tk.Toplevel(root)
     ventana_info.title("Información del Output")
-    ventana_info.geometry("500x400")
+    ventana_info.geometry("500x650")
 
     ttk.Label(ventana_info, text="Input:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
-    resumen_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10))
-    resumen_text.pack(padx=10, pady=5)
+    resumen_text = tk.Text(ventana_info, height=1, width=60, font=("Helvetica", 10), wrap="word")
+    resumen_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
     resumen_text.insert(tk.END, input)
     resumen_text.config(state=tk.DISABLED)
 
     ttk.Label(ventana_info, text="Consulta generada:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
-    analisis_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10))
-    analisis_text.pack(padx=10, pady=5)
+    analisis_text = tk.Text(ventana_info, height=3, width=60, font=("Helvetica", 10), wrap="word")
+    analisis_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
     analisis_text.insert(tk.END, sentencia)
     analisis_text.config(state=tk.DISABLED)
 
     ttk.Label(ventana_info, text="Datos", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
     observaciones_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10))
-    observaciones_text.pack(padx=10, pady=5)
+    observaciones_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
     observaciones_text.insert(tk.END, dataSet)
     observaciones_text.config(state=tk.DISABLED)
 

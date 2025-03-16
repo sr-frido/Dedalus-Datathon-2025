@@ -88,7 +88,7 @@ def convertir_a_sql(consulta_natural):
      # Realizar la solicitud al modelo
     response = client.chat.completions.create(
         model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0",  # Cambia al modelo permitido
-        messages=[{"role": "system", "content": "Eres un asistente experto en sqlite3. Por defecto las sentencias mostraran todos losd atos sobre los pacientes a no ser que se especifique lo contrario. Si la consulta que te llega es la palabra Error entonces vas a devulver un codigo sql que no haga completamente nada"},
+        messages=[{"role": "system", "content": "Eres un asistente humano experto en sqlite3. Por defecto las sentencias mostraran todos los datos sobre los pacientes a no ser que se especifique lo contrario. Si la consulta que te llega es la palabra Error entonces vas a devulver un codigo sql que no haga completamente nada"},
                   {"role": "user", "content": prompt}]
     )
 

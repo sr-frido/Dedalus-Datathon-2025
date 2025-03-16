@@ -12,11 +12,9 @@ path_to_database = os.path.join(os.path.dirname(__file__), "DataBase")
 # Obtener todos los archivos CSV en el directorio
 archivos_csv = [archivo for archivo in os.listdir(path_to_database) if archivo.endswith('.csv')]
 
-# Crear una conexión SQLite en memoria
-conn = sqlite3.connect(':memory:')
-
-
 def ejecutar_peticion(peticion):
+    # Crear una conexión SQLite en memoria
+    conn = sqlite3.connect(':memory:')
 
     cursor = conn.cursor()
     # Cargar y crear una tabla para cada archivo CSV
