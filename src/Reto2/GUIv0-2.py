@@ -5,10 +5,22 @@ from tkinter import ttk
 import pandas as pd
 import matplotlib.pyplot as plt
 from aux_func_GUI import leer_lineas_no_vacias, listar_carpetas
+import shutil
+
+# ---------------------------
+# Crear una carpeta temporal dentro del proyecto si no existe
+# ---------------------------
+#Se debe crear antes para evitar problemas
+temp_folder = os.path.join(os.path.dirname(__file__), "temp")
+if not os.path.exists(temp_folder):
+    os.makedirs(temp_folder)
 
 #CAMBIAR NOMBRES EN EL FUTURO
 from procesar_peticion import *
 from prompt_enginering import *
+from gestion_csvs import *
+
+
 
 # ---------------------------
 # Configuración global y datos
@@ -91,7 +103,7 @@ def llamar_a_llm_bedrock(prompt):
 
     input = consulta
     sentencia = convertir_a_sql(prompt)
-    dataSet = "Tonto quien lo lea"
+    dataSet = ejecutar_peticion(sentencia)
 
     return respuesta_LLM
 
@@ -366,3 +378,11 @@ btn_mostrar_info = ttk.Button(frame_medio_derecha, text="Mostrar Información", 
 btn_mostrar_info.pack(pady=5)  # Añade un pequeño espacio debajo
 
 root.mainloop()
+
+
+# ---------------------------
+# Eliminar la carpeta temporal y su contenido al finalizar el programa
+# ---------------------------
+if os.path.exists(temp_folder):
+    shutil.rmtree(temp_folder)
+    print(f'\nLa carpeta temporal {temp_folder} y su contenido han sido eliminados.')

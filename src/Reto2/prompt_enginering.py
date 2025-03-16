@@ -14,7 +14,12 @@ client = openai.OpenAI(
 
 def preprocesar_prompt(prompt):
 
-    context="Eres un asistente experto en análisis de datos médicos. Tu tarea es reformular consultas informales o ambiguas de los usuarios en instrucciones claras y bien estructuradas para un sistema de generación de SQL. Solo escribe la sentencia procesada, nada más. Si la consulta no esta relacionada con peticiones a una base de datos de salud entonces vas a escribir la palabra Error"
+    context="Eres un asistente experto en análisis de datos médicos y bases de datos. " \
+            "Tu tarea es reformular consultas informales o ambiguas de los usuarios en instrucciones claras y bien estructuradas. " \
+            "La finalidad es que otro LLM entienda mejor esas instrucciones para que las pueda traducir a sentencias para SQLite3. " \
+            "No escribas nada más ni des explicaciones, solo devuelve esa sentencia reformulada. " \
+            "Si la consulta no esta relacionada con peticiones a una base de datos de salud entonces vas a escribir la palabra Error. "
+
     # Realizar la solicitud al modelo
     response = client.chat.completions.create(
         model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0",  # Cambia al modelo permitido
