@@ -23,6 +23,11 @@ cohortes_guardados = {}
 current_cohort = None
 cohort_ids = []
 
+# Variables globales para info-output
+input = "Hola Mundo"
+sentencia = "Hola Mundo"
+dataSet = "Hola Mundo"
+
 
 # ---------------------------
 # Funciones para manejo de datos y LLM
@@ -78,8 +83,15 @@ def llamar_a_llm_bedrock(prompt):
     Placeholder para conexión real a AWS Bedrock o LiteLLM.
     """
     consulta = preprocesar_prompt(prompt)
-
     respuesta_LLM = analizar_prompt(prompt, consulta)
+
+    global input 
+    global sentencia
+    global dataSet
+
+    input = consulta
+    sentencia = convertir_a_sql(prompt)
+    dataSet = "Tonto quien lo lea"
 
     return respuesta_LLM
 
@@ -91,7 +103,6 @@ def enviar_a_llm():
     
     respuesta = llamar_a_llm_bedrock(prompt)
 
-    print(respuesta)
     
     output_text.config(state=tk.NORMAL)
     output_text.delete("1.0", tk.END)
@@ -193,6 +204,34 @@ def add_template():
         messagebox.showinfo("Éxito", "Plantilla agregada a los templates de usuario.")
     except Exception as e:
         messagebox.showerror("Error", f"No se pudo agregar la plantilla a los templates del usuario: {e}")
+    
+def abrir_info_output():
+    """
+    Abre una nueva ventana con tres cuadros de texto para mostrar información adicional.
+    """
+    ventana_info = tk.Toplevel(root)
+    ventana_info.title("Información del Output")
+    ventana_info.geometry("500x400")
+
+    ttk.Label(ventana_info, text="Input:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
+    resumen_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10))
+    resumen_text.pack(padx=10, pady=5)
+    resumen_text.insert(tk.END, input)
+    resumen_text.config(state=tk.DISABLED)
+
+    ttk.Label(ventana_info, text="Consulta generada:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
+    analisis_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10))
+    analisis_text.pack(padx=10, pady=5)
+    analisis_text.insert(tk.END, sentencia)
+    analisis_text.config(state=tk.DISABLED)
+
+    ttk.Label(ventana_info, text="Datos", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
+    observaciones_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10))
+    observaciones_text.pack(padx=10, pady=5)
+    observaciones_text.insert(tk.END, dataSet)
+    observaciones_text.config(state=tk.DISABLED)
+
+
 
 
 # ---------------------------
@@ -313,5 +352,9 @@ pw_right.add(frame_inferior_derecha, height=200)
 
 canvas_graficos = tk.Canvas(frame_inferior_derecha, bg="white")
 canvas_graficos.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+# Crear botón justo debajo de output_text
+btn_mostrar_info = ttk.Button(frame_medio_derecha, text="Mostrar Información", command=abrir_info_output)
+btn_mostrar_info.pack(pady=5)  # Añade un pequeño espacio debajo
 
 root.mainloop()
