@@ -242,6 +242,14 @@ root.title("Agente de Salud para Identificación de Cohortes")
 root.geometry("1000x600")
 root.configure(bg="#f0f0f0")
 
+# Obtener el tamaño de la pantalla y ajustar la ventana
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+root.geometry(f"{screen_width}x{screen_height}+0+0")  # Esto maximiza la ventana sin ocultar los botones
+
+# Permitir salir con ESC
+root.bind("<Escape>", lambda event: root.geometry("1000x600"))  # Regresar al tamaño inicial si se presiona ESC
+
 # Usamos ttk para un aspecto más moderno
 style = ttk.Style()
 style.theme_use("clam")
@@ -322,7 +330,7 @@ pw_horizontal.add(pw_right, stretch="always")
 
 # Sección superior: Entrada de prompt para LLM
 frame_superior_derecha = ttk.Frame(pw_right, padding=10)
-pw_right.add(frame_superior_derecha, height=200)
+pw_right.add(frame_superior_derecha, height=100)
 
 label_input = ttk.Label(frame_superior_derecha, text="Prompt para LLM:")
 label_input.pack(anchor="w", padx=5, pady=(0,5))
@@ -332,7 +340,7 @@ input_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 # Sección media: Botones y salida del LLM
 frame_medio_derecha = ttk.Frame(pw_right, padding=10)
-pw_right.add(frame_medio_derecha, height=200)
+pw_right.add(frame_medio_derecha, height=260)
 
 btn_analizar = ttk.Button(frame_medio_derecha, text="Analizar Cohorte (Ej. hist edad)", command=analizar_datos)
 btn_analizar.pack(fill=tk.X, padx=5, pady=5)
