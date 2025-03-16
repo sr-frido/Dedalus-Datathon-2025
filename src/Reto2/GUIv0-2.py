@@ -5,6 +5,12 @@ from tkinter import ttk
 import pandas as pd
 import matplotlib.pyplot as plt
 from aux_func_GUI import leer_lineas_no_vacias, listar_carpetas
+# --------------------------------------------------------------
+import webbrowser  # Necesitamos importar webbrowser
+import plotly.express as px
+import subprocess
+import sys
+# ------------------------------
 
 # ---------------------------
 # Configuración global y datos
@@ -304,7 +310,38 @@ output_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 frame_inferior_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_inferior_derecha, height=200)
 
-canvas_graficos = tk.Canvas(frame_inferior_derecha, bg="white")
-canvas_graficos.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+#canvas_graficos = tk.Canvas(frame_inferior_derecha, bg="white")
+#canvas_graficos.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+# ----------------------------------------------------------------
+# Variable global para el proceso Dash
+dash_process = None
+
+# Función para abrir el servidor Dash y navegador
+def open_browser():
+    global dash_process  # Hacer dash_process global para poder acceder y detenerlo
+    # Obtén la ruta completa del archivo GraficoV3.py
+    script_path = os.path.join(os.path.dirname(__file__), 'GraficoV3.py')
+    if os.path.exists(script_path):
+        # Usar subprocess para ejecutar el archivo Dash
+        dash_process = subprocess.Popen([sys.executable, script_path])
+        # Abrir el navegador automáticamente en la URL del servidor Dash
+        webbrowser.open("http://127.0.0.1:8050")  # Abre la URL en el navegador por defecto
+    else:
+        print("El archivo GraficoV3.py no se encuentra en la ruta esperada.")
+
+# Función para cerrar el servidor Dash cuando se cierre Tkinter
+def on_closing():
+    global dash_process
+    if dash_process:
+        dash_process.terminate()  # Termina el proceso del servidor Dash
+    root.destroy()  # Cierra la ventana de Tkinter
+
+# Agregar el botón en la sección inferior
+btn_abrir_dashboard = ttk.Button(frame_inferior_derecha, text="Abrir Dashboard", command=open_browser)
+btn_abrir_dashboard.pack(side=tk.BOTTOM, padx=5, pady=5)
+
+# Configurar el cierre de la aplicación Tkinter
+root.protocol("WM_DELETE_WINDOW", on_closing)
 
 root.mainloop()

@@ -1,3 +1,5 @@
+#pip instal dash
+# pip install tkinterweb
 import dash
 import os
 from dash import dcc, html
@@ -188,4 +190,4 @@ def actualizar_grafico(cohorte_seleccionado, columna_seleccionada):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, use_reloader=False, port=8050) # 'use_reloader=False' previene reinicios automáticos
