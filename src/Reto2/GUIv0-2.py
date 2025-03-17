@@ -16,6 +16,7 @@ if not os.path.exists(temp_folder):
     os.makedirs(temp_folder)
 
 temp_file = os.path.join(temp_folder, "resultado.txt")
+temp_csv = os.path.join(temp_folder, "resultado.csv")
 
 #CAMBIAR NOMBRES EN EL FUTURO
 from procesar_peticion import *
@@ -82,13 +83,25 @@ def reset():
     
 
 def guardar_cohorte():
-    nombre_nuevo = "Cohorte Pacientes Filtrada"
-    if "cohorte_pacientes" in cohortes:
-        cohortes_guardados[nombre_nuevo] = cohortes["cohorte_pacientes"].copy()
-        listbox_cohortes.insert(tk.END, nombre_nuevo)
-        messagebox.showinfo("Guardado", f"Se guardó la cohorte como '{nombre_nuevo}'.")
-    else:
-        messagebox.showerror("Error", "No se encontró 'cohorte_pacientes' para guardar.")
+    # Archivo de origen fijo
+    origen = temp_csv  # Reemplaza con la ruta real
+    
+    # Verificar si el archivo de origen existe
+    if not os.path.exists(origen):
+        messagebox.showwarning("Aviso", "Aún no has creado ningún cohorte.")
+        return
+    
+    # Seleccionar la ubicación y nombre de destino (solo archivos CSV)
+    destino = filedialog.asksaveasfilename(title="Guardar archivo como", defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+    if not destino:
+        return  # Si no se elige destino, salir de la función
+    
+    try:
+        # Copiar el archivo
+        shutil.copy(origen, destino)
+        messagebox.showinfo("Éxito", "Archivo guardado correctamente")
+    except Exception as e:
+        messagebox.showerror("Error", f"No se pudo copiar el archivo: {e}")
 
 def llamar_a_llm_bedrock(prompt):
     """
