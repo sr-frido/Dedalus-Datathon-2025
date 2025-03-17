@@ -113,12 +113,17 @@ def enviar_a_llm():
         messagebox.showwarning("Advertencia", "El prompt está vacío.")
         return
     
-    respuesta = llamar_a_llm_bedrock(prompt)
-
     
     output_text.config(state=tk.NORMAL)
     output_text.delete("1.0", tk.END)
+    output_text.insert(tk.END, "Procesando...")
+    output_text.config(state=tk.DISABLED)
+    output_text.update_idletasks()
+
+    respuesta = llamar_a_llm_bedrock(prompt)
     
+    output_text.config(state=tk.NORMAL)
+    output_text.delete("1.0", tk.END)
     output_text.insert(tk.END, respuesta)
     output_text.config(state=tk.DISABLED)
 
@@ -354,7 +359,7 @@ input_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 frame_medio_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_medio_derecha, height=260)
 
-btn_analizar = ttk.Button(frame_medio_derecha, text="Analizar Cohorte (Ej. hist edad)", command=analizar_datos)
+btn_analizar = ttk.Button(frame_medio_derecha, text="Reset", command=analizar_datos)
 btn_analizar.pack(fill=tk.X, padx=5, pady=5)
 
 btn_enviar = ttk.Button(frame_medio_derecha, text="Enviar a LLM", command=enviar_a_llm)
