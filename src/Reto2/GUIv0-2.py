@@ -148,6 +148,8 @@ def enviar_a_llm():
     output_text.insert(tk.END, respuesta)
     output_text.config(state=tk.DISABLED)
 
+    input_text.delete("1.0", tk.END)
+
 def on_template_select(event):
     seleccion = listbox_templates.curselection()
     if seleccion:
