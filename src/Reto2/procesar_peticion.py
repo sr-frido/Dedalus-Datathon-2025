@@ -12,6 +12,13 @@ client = openai.OpenAI(
     base_url="https://litellm.dccp.pbu.dedalus.com"
 )
 
+temp_folder = os.path.join(os.path.dirname(__file__), "temp")
+if not os.path.exists(temp_folder):
+    os.makedirs(temp_folder)
+
+temp_file = os.path.join(temp_folder, "resultado.txt")
+temp_csv = os.path.join(temp_folder, "resultado.csv")
+
 # Información base sobre cada csv de nuestro database
 def obtener_info_csvs(directorio):
     datos = {}  # Diccionario para almacenar la info de cada archivo
@@ -78,9 +85,13 @@ def convertir_a_sql(consulta_natural):
     Convierte la siguiente solicitud en una consulta sqlite3 válida para una base de datos de pacientes:
 
     Solicitud: "{consulta_natural}"
-
-    La base de datos contiene las siguientes tablas y sus respectivas columnas:
     """
+    if os.path.exists(temp_file):
+        with open(temp_file, "r") as archivo:
+            sentencia_sql = archivo.read()
+            prompt += f"\n\nSentencia sql existente a tener en cuenta: \n\n\"{sentencia_sql}\""
+
+    prompt += "\n\nLa base de datos contiene las siguientes tablas y sus respectivas columnas:"
 
     # Se añade la información de cada tabla con un formato más organizado
     for archivo, info in info_csv.items():
@@ -94,8 +105,10 @@ def convertir_a_sql(consulta_natural):
     
     prompt += "\n\n    Devuelve SOLO la consulta SQL sin explicaciones."
 
+
     context = "Eres un asistente humano experto en sqlite3. " \
               "Por defecto las sentencias mostraran todos los datos sobre los pacientes a no ser que se especifique lo contrario. " \
+              "En algunos casos tendras una consulta ya existente y te pediran añadir datos o excluir datos de esa consulta, tenlo en cuenta. " \
               "Si la consulta que te llega es la palabra Error entonces vas a devulver un codigo sql que no haga completamente nada"
     
     # Realizar la solicitud al modelo
@@ -104,5 +117,7 @@ def convertir_a_sql(consulta_natural):
         messages=[{"role": "system", "content": context},
                   {"role": "user", "content": prompt}]
     )
+
+    print(prompt)
 
     return(response.choices[0].message.content.strip())

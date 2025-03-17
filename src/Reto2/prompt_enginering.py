@@ -33,7 +33,7 @@ def preprocesar_prompt(prompt):
             "La finalidad es que otro LLM entienda mejor esas instrucciones para que las pueda traducir a sentencias para SQLite3. " \
             "No escribas nada más ni des explicaciones, solo devuelve esa sentencia reformulada. " \
             "Si la consulta no esta relacionada con peticiones a una base de datos de salud entonces vas a escribir la palabra Error. " \
-            "Tienes que interpretar también si se desea añadir o excluir sobre la sentencia sql que ya hay generada y que te mostraran, si esque la hay."
+            "Tienes que interpretar también si se desea añadir o excluir sobre la sentencia sql que ya hay generada y que te mostraran, si esque la hay. El LLM que procesara la petición ya hes consciente de esa consulta asique no es necesario que se la escribas, solo si debe añadir o excluir sobre ella"
 
     # Realizar la solicitud al modelo
     response = client.chat.completions.create(

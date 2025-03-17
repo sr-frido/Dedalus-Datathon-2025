@@ -33,9 +33,6 @@ def ejecutar_peticion(peticion):
     columnas = [desc[0] for desc in cursor.description]
     df_resultado = pd.DataFrame(resultados, columns=columnas)
 
-    # Mostrar el DataFrame
-    print(df_resultado)
-
     # Crear una ruta para el archivo CSV dentro de la carpeta temporal
     temp_file_name = os.path.join(temp_folder, "resultado.csv")
 
