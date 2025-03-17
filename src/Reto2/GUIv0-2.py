@@ -303,10 +303,13 @@ style.configure("TButton", font=("Helvetica", 10), padding=5)
 frame_superior = ttk.Frame(root, padding=10)
 frame_superior.pack(fill=tk.X)
 
+"""
 btn_cargar = ttk.Button(frame_superior, text="Cargar Datos", command=cargar_datos)
 btn_cargar.pack(side=tk.LEFT, padx=5)
+DESACTIVADO TEMPORAL
+"""
 
-btn_guardar = ttk.Button(frame_superior, text="Guardar como Cohorte", command=guardar_cohorte)
+btn_guardar = ttk.Button(frame_superior, text="Guardar como cohorte", command=guardar_cohorte)
 btn_guardar.pack(side=tk.LEFT, padx=5)
 
 # ---------------------------
@@ -372,7 +375,7 @@ pw_horizontal.add(pw_right, stretch="always")
 frame_superior_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_superior_derecha, height=100)
 
-label_input = ttk.Label(frame_superior_derecha, text="Prompt para LLM:")
+label_input = ttk.Label(frame_superior_derecha, text="Consulta para cohorte:")
 label_input.pack(anchor="w", padx=5, pady=(0,5))
 
 input_text = scrolledtext.ScrolledText(frame_superior_derecha, width=80, height=5, font=("Helvetica", 10))
