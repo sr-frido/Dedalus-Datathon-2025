@@ -225,7 +225,7 @@ def abrir_info_output():
     ventana_info.title("Información del Output")
     ventana_info.geometry("500x650")
 
-    ttk.Label(ventana_info, text="Input:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
+    ttk.Label(ventana_info, text="Input procesado:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
     resumen_text = tk.Text(ventana_info, height=1, width=60, font=("Helvetica", 10), wrap="word")
     resumen_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
     resumen_text.insert(tk.END, input)
@@ -237,7 +237,7 @@ def abrir_info_output():
     analisis_text.insert(tk.END, sentencia)
     analisis_text.config(state=tk.DISABLED)
 
-    ttk.Label(ventana_info, text="Datos", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
+    ttk.Label(ventana_info, text="Datos filtrados:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
     observaciones_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10))
     observaciones_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
     observaciones_text.insert(tk.END, dataSet)

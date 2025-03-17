@@ -30,8 +30,8 @@ def analizar_prompt(input, peticion):
 
      # Realizar la solicitud al modelo
     response = client.chat.completions.create(
-        model="bedrock/anthropic.claude-3-haiku-20240307-v1:0",  # Cambia al modelo permitido
-        messages=[{"role": "system", "content": "Eres un asistente que responde en una o dos lineas a un usuario sobre una petición que ha realizado y una sentencia sql que ha generado otro LLM, el usuario no tiene ni idea de sql ni de bases de datos así que no des explicaciones sobre eso. Si la consulta que se ha realizado es \"Error\", se debe a que el usuario ha hecho una consulta que no procede en este contexto "},
+        model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0",  # Cambia al modelo permitido
+        messages=[{"role": "system", "content": "Eres un asistente que responde en una o dos lineas a un usuario sobre una petición que ha realizado y una sentencia sql que ha generado otro LLM, el usuario no tiene ni idea de sql ni de bases de datos así que no des explicaciones sobre eso. Intenta dar también alguna sugerencia a tener en cuenta sobre los datos generados, como siguientes pasos a seguir. Si la consulta que se ha realizado es \"Error\", se debe a que el usuario ha hecho una consulta que no procede en este contexto "},
                   {"role": "user", "content": prompt}]
     )
 
