@@ -15,6 +15,8 @@ temp_folder = os.path.join(os.path.dirname(__file__), "temp")
 if not os.path.exists(temp_folder):
     os.makedirs(temp_folder)
 
+temp_file = os.path.join(temp_folder, "resultado.txt")
+
 #CAMBIAR NOMBRES EN EL FUTURO
 from procesar_peticion import *
 from prompt_enginering import *
@@ -61,25 +63,23 @@ def cargar_datos():
         
         messagebox.showinfo("Carga exitosa", f"Se cargaron {len(cohortes)} CSVs en total.")
 
-def analizar_datos():
+def reset():
     """
-    Muestra un histograma de la columna 'edad' del DataFrame 'cohorte_pacientes'
-    si se encuentra disponible.
+    Resetea el cohorte y los prompts
     """
-    if "cohorte_pacientes" in cohortes:
-        df_pacientes = cohortes["cohorte_pacientes"]
-        if "edad" in df_pacientes.columns:
-            plt.figure(figsize=(6, 4))
-            df_pacientes["edad"].hist(bins=20, color='skyblue')
-            plt.xlabel("Edad")
-            plt.ylabel("Cantidad de Pacientes")
-            plt.title("Distribución de Edades (cohorte_pacientes)")
-            plt.show()
-        else:
-            messagebox.showwarning("Columna no encontrada", 
-                                   "El DataFrame 'cohorte_pacientes' no contiene la columna 'edad'.")
-    else:
-        messagebox.showerror("Error", "No existe 'cohorte_pacientes' en los datos cargados.")
+    with open(temp_file, "w") as archivo:
+        archivo.write("")
+
+    output_text.config(state=tk.NORMAL)
+    output_text.delete("1.0", tk.END)
+    #output_text.insert(tk.END, "")
+    output_text.config(state=tk.DISABLED)
+
+    input_text.config(state=tk.NORMAL)
+    input_text.delete("1.0", tk.END)
+    #output_text.insert(tk.END, "")
+    input_text.config(state=tk.DISABLED)
+    
 
 def guardar_cohorte():
     nombre_nuevo = "Cohorte Pacientes Filtrada"
@@ -104,6 +104,9 @@ def llamar_a_llm_bedrock(prompt):
     input = consulta
     sentencia = convertir_a_sql(prompt)
     dataSet = ejecutar_peticion(sentencia)
+
+    with open(temp_file, "w") as archivo:
+        archivo.write(sentencia)
 
     return respuesta_LLM
 
@@ -359,11 +362,11 @@ input_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 frame_medio_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_medio_derecha, height=260)
 
-btn_analizar = ttk.Button(frame_medio_derecha, text="Reset", command=analizar_datos)
-btn_analizar.pack(fill=tk.X, padx=5, pady=5)
-
-btn_enviar = ttk.Button(frame_medio_derecha, text="Enviar a LLM", command=enviar_a_llm)
+btn_enviar = ttk.Button(frame_medio_derecha, text="Procesar cohorte", command=enviar_a_llm)
 btn_enviar.pack(fill=tk.X, padx=5, pady=5)
+
+btn_reset = ttk.Button(frame_medio_derecha, text="Reset", command=reset)
+btn_reset.pack(fill=tk.X, padx=5, pady=5)
 
 label_output = ttk.Label(frame_medio_derecha, text="Respuesta del Sistema:")
 label_output.pack(anchor="w", padx=5, pady=(10,5))
