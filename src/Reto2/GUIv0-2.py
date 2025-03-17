@@ -71,15 +71,20 @@ def reset():
     with open(temp_file, "w") as archivo:
         archivo.write("")
 
+    if os.path.exists(temp_csv):  # Verifica si el archivo existe
+        os.remove(temp_csv)  # Borra el archivo
+    print("Archivo eliminado.")
+
+    if os.path.exists(temp_file):  # Verifica si el archivo existe
+        os.remove(temp_file)  # Borra el archivo
+    print("Archivo eliminado.")
+
     output_text.config(state=tk.NORMAL)
     output_text.delete("1.0", tk.END)
-    #output_text.insert(tk.END, "")
+    output_text.insert(tk.END, "")
     output_text.config(state=tk.DISABLED)
 
-    input_text.config(state=tk.NORMAL)
     input_text.delete("1.0", tk.END)
-    #output_text.insert(tk.END, "")
-    input_text.config(state=tk.DISABLED)
     
 
 def guardar_cohorte():
