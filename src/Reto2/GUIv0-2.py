@@ -11,6 +11,25 @@ import plotly.express as px
 import subprocess
 import sys
 # ------------------------------
+import shutil
+
+# ---------------------------
+# Crear una carpeta temporal dentro del proyecto si no existe
+# ---------------------------
+#Se debe crear antes para evitar problemas
+temp_folder = os.path.join(os.path.dirname(__file__), "temp")
+if not os.path.exists(temp_folder):
+    os.makedirs(temp_folder)
+
+temp_file = os.path.join(temp_folder, "resultado.txt")
+temp_csv = os.path.join(temp_folder, "resultado.csv")
+
+#CAMBIAR NOMBRES EN EL FUTURO
+from procesar_peticion import *
+from prompt_enginering import *
+from gestion_csvs import *
+
+
 
 # ---------------------------
 # Configuración global y datos
@@ -24,6 +43,11 @@ cohortes_guardados = {}
 # Variables globales para el cohorte actual y los IDs extraídos
 current_cohort = None
 cohort_ids = []
+
+# Variables globales para info-output
+input = "Aún no hay información"
+sentencia = "Aún no hay información"
+dataSet = "Aún no hay información"
 
 
 # ---------------------------
@@ -46,44 +70,69 @@ def cargar_datos():
         
         messagebox.showinfo("Carga exitosa", f"Se cargaron {len(cohortes)} CSVs en total.")
 
-def analizar_datos():
+def reset():
     """
-    Muestra un histograma de la columna 'edad' del DataFrame 'cohorte_pacientes'
-    si se encuentra disponible.
+    Resetea el cohorte y los prompts
     """
-    if "cohorte_pacientes" in cohortes:
-        df_pacientes = cohortes["cohorte_pacientes"]
-        if "edad" in df_pacientes.columns:
-            plt.figure(figsize=(6, 4))
-            df_pacientes["edad"].hist(bins=20, color='skyblue')
-            plt.xlabel("Edad")
-            plt.ylabel("Cantidad de Pacientes")
-            plt.title("Distribución de Edades (cohorte_pacientes)")
-            plt.show()
-        else:
-            messagebox.showwarning("Columna no encontrada", 
-                                   "El DataFrame 'cohorte_pacientes' no contiene la columna 'edad'.")
-    else:
-        messagebox.showerror("Error", "No existe 'cohorte_pacientes' en los datos cargados.")
+    with open(temp_file, "w") as archivo:
+        archivo.write("")
+
+    if os.path.exists(temp_csv):  # Verifica si el archivo existe
+        os.remove(temp_csv)  # Borra el archivo
+    print("Archivo eliminado.")
+
+    if os.path.exists(temp_file):  # Verifica si el archivo existe
+        os.remove(temp_file)  # Borra el archivo
+    print("Archivo eliminado.")
+
+    output_text.config(state=tk.NORMAL)
+    output_text.delete("1.0", tk.END)
+    output_text.insert(tk.END, "")
+    output_text.config(state=tk.DISABLED)
+
+    input_text.delete("1.0", tk.END)
+    
 
 def guardar_cohorte():
-    nombre_nuevo = "Cohorte Pacientes Filtrada"
-    if "cohorte_pacientes" in cohortes:
-        cohortes_guardados[nombre_nuevo] = cohortes["cohorte_pacientes"].copy()
-        listbox_cohortes.insert(tk.END, nombre_nuevo)
-        messagebox.showinfo("Guardado", f"Se guardó la cohorte como '{nombre_nuevo}'.")
-    else:
-        messagebox.showerror("Error", "No se encontró 'cohorte_pacientes' para guardar.")
+    # Archivo de origen fijo
+    origen = temp_csv  # Reemplaza con la ruta real
+    
+    # Verificar si el archivo de origen existe
+    if not os.path.exists(origen):
+        messagebox.showwarning("Aviso", "Aún no has creado ningún cohorte.")
+        return
+    
+    # Seleccionar la ubicación y nombre de destino (solo archivos CSV)
+    destino = filedialog.asksaveasfilename(title="Guardar archivo como", defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+    if not destino:
+        return  # Si no se elige destino, salir de la función
+    
+    try:
+        # Copiar el archivo
+        shutil.copy(origen, destino)
+        messagebox.showinfo("Éxito", "Archivo guardado correctamente")
+    except Exception as e:
+        messagebox.showerror("Error", f"No se pudo copiar el archivo: {e}")
 
 def llamar_a_llm_bedrock(prompt):
     """
     Placeholder para conexión real a AWS Bedrock o LiteLLM.
     """
-    respuesta_simulada = (
-        "Respuesta simulada del LLM.\n\n"
-        f"Prompt recibido:\n{prompt}"
-    )
-    return respuesta_simulada
+    consulta = preprocesar_prompt(prompt)
+    respuesta_LLM = analizar_prompt(prompt, consulta)
+
+    global input 
+    global sentencia
+    global dataSet
+
+    input = consulta
+    sentencia = convertir_a_sql(prompt)
+    dataSet = ejecutar_peticion(sentencia)
+
+    with open(temp_file, "w") as archivo:
+        archivo.write(sentencia)
+
+    return respuesta_LLM
 
 def enviar_a_llm():
     prompt = input_text.get("1.0", tk.END).strip()
@@ -91,12 +140,21 @@ def enviar_a_llm():
         messagebox.showwarning("Advertencia", "El prompt está vacío.")
         return
     
+    
+    output_text.config(state=tk.NORMAL)
+    output_text.delete("1.0", tk.END)
+    output_text.insert(tk.END, "Procesando...")
+    output_text.config(state=tk.DISABLED)
+    output_text.update_idletasks()
+
     respuesta = llamar_a_llm_bedrock(prompt)
     
     output_text.config(state=tk.NORMAL)
     output_text.delete("1.0", tk.END)
     output_text.insert(tk.END, respuesta)
     output_text.config(state=tk.DISABLED)
+
+    input_text.delete("1.0", tk.END)
 
 def on_template_select(event):
     seleccion = listbox_templates.curselection()
@@ -192,6 +250,34 @@ def add_template():
         messagebox.showinfo("Éxito", "Plantilla agregada a los templates de usuario.")
     except Exception as e:
         messagebox.showerror("Error", f"No se pudo agregar la plantilla a los templates del usuario: {e}")
+    
+def abrir_info_output():
+    """
+    Abre una nueva ventana con tres cuadros de texto para mostrar información adicional.
+    """
+    ventana_info = tk.Toplevel(root)
+    ventana_info.title("Información del Output")
+    ventana_info.geometry("500x650")
+
+    ttk.Label(ventana_info, text="Input procesado:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
+    resumen_text = tk.Text(ventana_info, height=1, width=60, font=("Helvetica", 10), wrap="word")
+    resumen_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+    resumen_text.insert(tk.END, input)
+    resumen_text.config(state=tk.DISABLED)
+
+    ttk.Label(ventana_info, text="Consulta generada:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
+    analisis_text = tk.Text(ventana_info, height=3, width=60, font=("Helvetica", 10), wrap="word")
+    analisis_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+    analisis_text.insert(tk.END, sentencia)
+    analisis_text.config(state=tk.DISABLED)
+
+    ttk.Label(ventana_info, text="Datos filtrados:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
+    observaciones_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10))
+    observaciones_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+    observaciones_text.insert(tk.END, dataSet)
+    observaciones_text.config(state=tk.DISABLED)
+
+
 
 
 # ---------------------------
@@ -201,6 +287,14 @@ root = tk.Tk()
 root.title("Agente de Salud para Identificación de Cohortes")
 root.geometry("1000x600")
 root.configure(bg="#f0f0f0")
+
+# Obtener el tamaño de la pantalla y ajustar la ventana
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+root.geometry(f"{screen_width}x{screen_height}+0+0")  # Esto maximiza la ventana sin ocultar los botones
+
+# Permitir salir con ESC
+root.bind("<Escape>", lambda event: root.geometry("1000x600"))  # Regresar al tamaño inicial si se presiona ESC
 
 # Usamos ttk para un aspecto más moderno
 style = ttk.Style()
@@ -215,10 +309,13 @@ style.configure("TButton", font=("Helvetica", 10), padding=5)
 frame_superior = ttk.Frame(root, padding=10)
 frame_superior.pack(fill=tk.X)
 
+"""
 btn_cargar = ttk.Button(frame_superior, text="Cargar Datos", command=cargar_datos)
 btn_cargar.pack(side=tk.LEFT, padx=5)
+DESACTIVADO TEMPORAL
+"""
 
-btn_guardar = ttk.Button(frame_superior, text="Guardar como Cohorte", command=guardar_cohorte)
+btn_guardar = ttk.Button(frame_superior, text="Guardar como cohorte", command=guardar_cohorte)
 btn_guardar.pack(side=tk.LEFT, padx=5)
 
 # ---------------------------
@@ -282,9 +379,9 @@ pw_horizontal.add(pw_right, stretch="always")
 
 # Sección superior: Entrada de prompt para LLM
 frame_superior_derecha = ttk.Frame(pw_right, padding=10)
-pw_right.add(frame_superior_derecha, height=200)
+pw_right.add(frame_superior_derecha, height=100)
 
-label_input = ttk.Label(frame_superior_derecha, text="Prompt para LLM:")
+label_input = ttk.Label(frame_superior_derecha, text="Consulta para cohorte:")
 label_input.pack(anchor="w", padx=5, pady=(0,5))
 
 input_text = scrolledtext.ScrolledText(frame_superior_derecha, width=80, height=5, font=("Helvetica", 10))
@@ -292,18 +389,18 @@ input_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 # Sección media: Botones y salida del LLM
 frame_medio_derecha = ttk.Frame(pw_right, padding=10)
-pw_right.add(frame_medio_derecha, height=200)
+pw_right.add(frame_medio_derecha, height=260)
 
-btn_analizar = ttk.Button(frame_medio_derecha, text="Analizar Cohorte (Ej. hist edad)", command=analizar_datos)
-btn_analizar.pack(fill=tk.X, padx=5, pady=5)
-
-btn_enviar = ttk.Button(frame_medio_derecha, text="Enviar a LLM", command=enviar_a_llm)
+btn_enviar = ttk.Button(frame_medio_derecha, text="Procesar cohorte", command=enviar_a_llm)
 btn_enviar.pack(fill=tk.X, padx=5, pady=5)
+
+btn_reset = ttk.Button(frame_medio_derecha, text="Reset", command=reset)
+btn_reset.pack(fill=tk.X, padx=5, pady=5)
 
 label_output = ttk.Label(frame_medio_derecha, text="Respuesta del Sistema:")
 label_output.pack(anchor="w", padx=5, pady=(10,5))
 
-output_text = scrolledtext.ScrolledText(frame_medio_derecha, width=80, height=5, state=tk.DISABLED, font=("Helvetica", 10))
+output_text = scrolledtext.ScrolledText(frame_medio_derecha, width=80, height=5, state=tk.DISABLED, font=("Helvetica", 10), wrap="word")
 output_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 # Sección inferior: Área de gráficos o resultados visuales
@@ -344,4 +441,16 @@ btn_abrir_dashboard.pack(side=tk.BOTTOM, padx=5, pady=5)
 # Configurar el cierre de la aplicación Tkinter
 root.protocol("WM_DELETE_WINDOW", on_closing)
 
+# Crear botón justo debajo de output_text
+btn_mostrar_info = ttk.Button(frame_medio_derecha, text="Mostrar Información", command=abrir_info_output)
+btn_mostrar_info.pack(pady=5)  # Añade un pequeño espacio debajo
+
 root.mainloop()
+
+
+# ---------------------------
+# Eliminar la carpeta temporal y su contenido al finalizar el programa
+# ---------------------------
+if os.path.exists(temp_folder):
+    shutil.rmtree(temp_folder)
+    print(f'\nLa carpeta temporal {temp_folder} y su contenido han sido eliminados.')
