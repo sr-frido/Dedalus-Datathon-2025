@@ -275,27 +275,33 @@ def abrir_info_output():
 
 
 # ---------------------------
-# Configuración de la ventana principal y estilos
+# Configuración de la ventana principal y estilos (modo oscuro profesional)
 # ---------------------------
 root = tk.Tk()
 root.title("Agente de Salud para Identificación de Cohortes")
 root.geometry("1000x600")
-root.configure(bg="#f0f0f0")
-
-# Obtener el tamaño de la pantalla y ajustar la ventana
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
-root.geometry(f"{screen_width}x{screen_height}+0+0")  # Esto maximiza la ventana sin ocultar los botones
-
-# Permitir salir con ESC
-root.bind("<Escape>", lambda event: root.geometry("1000x600"))  # Regresar al tamaño inicial si se presiona ESC
+root.configure(bg="#2e2e2e")
 
 # Usamos ttk para un aspecto más moderno
 style = ttk.Style()
 style.theme_use("clam")
-style.configure("TFrame", background="#f0f0f0")
-style.configure("TLabel", background="#f0f0f0", font=("Helvetica", 10))
-style.configure("TButton", font=("Helvetica", 10), padding=5)
+
+# Paleta de colores oscuros
+bg_dark = "#2e2e2e"
+bg_frame = "#1e1e1e"
+fg_text = "#ffffff"
+accent = "#3c3c3c"
+
+# Estilo para frames y widgets
+style.configure("TFrame", background=bg_frame)
+style.configure("TLabel", background=bg_frame, foreground=fg_text, font=("Segoe UI", 10))
+style.configure("TButton", background=accent, foreground=fg_text, font=("Segoe UI", 10), padding=6)
+style.map("TButton",
+          background=[("active", "#505050")],
+          foreground=[("active", "#ffffff")])
+
+# Permitir salir con ESC
+root.bind("<Escape>", lambda event: root.geometry("1000x600"))  # Regresar al tamaño inicial si se presiona ESC
 
 # ---------------------------
 # Frame superior: botones principales
@@ -315,13 +321,13 @@ btn_guardar.pack(side=tk.LEFT, padx=5)
 # ---------------------------
 # PanedWindow principal para dividir en panel izquierdo y derecho
 # ---------------------------
-pw_horizontal = tk.PanedWindow(root, orient=tk.HORIZONTAL, bg="#f0f0f0", sashwidth=5)
+pw_horizontal = tk.PanedWindow(root, orient=tk.HORIZONTAL, bg=bg_dark, sashwidth=5, sashrelief=tk.FLAT, sashpad=0)
 pw_horizontal.pack(fill=tk.BOTH, expand=True)
 
 # ---------------------------
 # PANEL IZQUIERDO: PanedWindow vertical para plantillas y cohortes guardados
 # ---------------------------
-pw_left = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg="#f0f0f0", sashwidth=5)
+pw_left = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg=bg_dark, sashwidth=5, sashrelief=tk.FLAT, sashpad=0)
 pw_horizontal.add(pw_left, width=300)
 
 # Sección de plantillas
@@ -338,7 +344,8 @@ label_templates.pack(side=tk.LEFT, padx=(0, 5))
 btn_add_template = ttk.Button(frame_header, text="+", command=add_template, width=3)
 btn_add_template.pack(side=tk.LEFT)
 
-listbox_templates = Listbox(frame_templates, height=10, font=("Helvetica", 10))
+listbox_templates = Listbox(frame_templates, height=10, font=("Segoe UI", 10),
+                            bg=bg_dark, fg=fg_text, selectbackground=accent, selectforeground=fg_text, relief=tk.FLAT)
 listbox_templates.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 
@@ -355,7 +362,8 @@ pw_left.add(frame_cohortes, height=200)
 label_cohortes = ttk.Label(frame_cohortes, text="Cohortes guardados:")
 label_cohortes.pack(anchor="w", padx=5, pady=(0,5))
 
-listbox_cohortes = Listbox(frame_cohortes, height=10, font=("Helvetica", 10))
+listbox_cohortes = Listbox(frame_cohortes, height=10, font=("Segoe UI", 10),
+                           bg=bg_dark, fg=fg_text, selectbackground=accent, selectforeground=fg_text, relief=tk.FLAT)
 listbox_cohortes.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 for t in cohortes:
@@ -368,7 +376,7 @@ btn_exit_cohort.pack(pady=5)
 # ---------------------------
 # PANEL DERECHO: PanedWindow vertical para entrada, salida y gráficos
 # ---------------------------
-pw_right = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg="#f0f0f0", sashwidth=5)
+pw_right = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg=bg_dark, sashwidth=5, sashrelief=tk.FLAT, sashpad=0)
 pw_horizontal.add(pw_right, stretch="always")
 
 # Sección superior: Entrada de prompt para LLM
@@ -378,7 +386,8 @@ pw_right.add(frame_superior_derecha, height=100)
 label_input = ttk.Label(frame_superior_derecha, text="Consulta para cohorte:")
 label_input.pack(anchor="w", padx=5, pady=(0,5))
 
-input_text = scrolledtext.ScrolledText(frame_superior_derecha, width=80, height=5, font=("Helvetica", 10))
+input_text = scrolledtext.ScrolledText(frame_superior_derecha, width=80, height=5,
+                                       font=("Segoe UI", 10), bg=bg_dark, fg=fg_text, insertbackground=fg_text)
 input_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 # Sección media: Botones y salida del LLM
@@ -394,14 +403,16 @@ btn_reset.pack(fill=tk.X, padx=5, pady=5)
 label_output = ttk.Label(frame_medio_derecha, text="Respuesta del Sistema:")
 label_output.pack(anchor="w", padx=5, pady=(10,5))
 
-output_text = scrolledtext.ScrolledText(frame_medio_derecha, width=80, height=5, state=tk.DISABLED, font=("Helvetica", 10), wrap="word")
+output_text = scrolledtext.ScrolledText(frame_medio_derecha, width=80, height=5,
+                                        state=tk.DISABLED, font=("Segoe UI", 10),
+                                        bg=bg_dark, fg=fg_text, insertbackground=fg_text)
 output_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 # Sección inferior: Área de gráficos o resultados visuales
 frame_inferior_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_inferior_derecha, height=200)
 
-canvas_graficos = tk.Canvas(frame_inferior_derecha, bg="white")
+canvas_graficos = tk.Canvas(frame_inferior_derecha, bg="grey")
 canvas_graficos.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 # Crear botón justo debajo de output_text
