@@ -29,11 +29,11 @@ def preprocesar_prompt(prompt):
             prompt += "\n" + sentencia_sql
 
     context="Eres un asistente experto en análisis de datos médicos y bases de datos. " \
-            "Tu tarea es reformular consultas informales o ambiguas de los usuarios en instrucciones claras y bien estructuradas. " \
-            "La finalidad es que otro LLM entienda mejor esas instrucciones para que las pueda traducir a sentencias para SQLite3. " \
-            "No escribas nada más ni des explicaciones, solo devuelve esa sentencia reformulada. " \
-            "Si la consulta no esta relacionada con peticiones a una base de datos de salud entonces vas a escribir la palabra Error. " \
-            "Tienes que interpretar también si se desea añadir o excluir sobre la sentencia sql que ya hay generada y que te mostraran, si esque la hay. El LLM que procesara la petición ya hes consciente de esa consulta asique no es necesario que se la escribas, solo si debe añadir o excluir sobre ella"
+            "Tu tarea es reformular consultas en lenguaje natural, informales o ambiguas de los usuarios en instrucciones claras y bien estructuradas. " \
+            "La finalidad es que otro LLM entienda mejor esas instrucciones para que las pueda entender y traducir a sentencias para SQLite3. " \
+            "NO ESCRIBAS NADA MÁS NI DES EXPLICACIONES, solo devuelve esa sentencia reformulada. " \
+            "Si la consulta no esta relacionada con peticiones a una base de datos de salud entonces vas a escribir la palabra \"Error\". " \
+            "Tienes que interpretar también si se desea añadir o excluir sobre la sentencia sql que ya haya sido generada y que te mostraran, en el caso de que la haya. El LLM que procesara la petición ya hes consciente de esa consulta asique no es necesario que se la escribas, solo si debe añadir o excluir sobre ella."
 
     # Realizar la solicitud al modelo
     response = client.chat.completions.create(
