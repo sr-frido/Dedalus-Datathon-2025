@@ -137,7 +137,6 @@ def llamar_a_llm_bedrock(prompt):
     Placeholder para conexión real a AWS Bedrock o LiteLLM.
     """
     consulta = preprocesar_prompt(prompt)
-    respuesta_LLM = analizar_prompt(prompt, consulta)
 
     global input 
     global sentencia
@@ -146,6 +145,8 @@ def llamar_a_llm_bedrock(prompt):
     input = consulta
     sentencia = convertir_a_sql(input)
     dataSet = ejecutar_peticion(sentencia)
+
+    respuesta_LLM = analizar_prompt(consulta, sentencia)
 
     with open(temp_file, "w") as archivo:
         archivo.write(sentencia)
