@@ -244,7 +244,7 @@ def add_template():
         messagebox.showinfo("Éxito", "Plantilla agregada a los templates de usuario.")
     except Exception as e:
         messagebox.showerror("Error", f"No se pudo agregar la plantilla a los templates del usuario: {e}")
-    
+
 def abrir_info_output():
     """
     Abre una nueva ventana con tres cuadros de texto para mostrar información adicional.
@@ -252,26 +252,25 @@ def abrir_info_output():
     ventana_info = tk.Toplevel(root)
     ventana_info.title("Información del Output")
     ventana_info.geometry("500x650")
+    ventana_info.configure(bg="#1e1e1e")
 
-    ttk.Label(ventana_info, text="Input procesado:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
-    resumen_text = tk.Text(ventana_info, height=1, width=60, font=("Helvetica", 10), wrap="word")
+    ttk.Label(ventana_info, text="Input procesado:", font=("Helvetica", 10, "bold"), background="#1e1e1e", foreground="#ffffff").pack(anchor="w", padx=10, pady=5)
+    resumen_text = tk.Text(ventana_info, height=1, width=60, font=("Helvetica", 10), bg="#2d2d2d", fg="#ffffff", insertbackground="#ffffff")
     resumen_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
     resumen_text.insert(tk.END, input)
     resumen_text.config(state=tk.DISABLED)
 
-    ttk.Label(ventana_info, text="Consulta generada:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
-    analisis_text = tk.Text(ventana_info, height=3, width=60, font=("Helvetica", 10), wrap="word")
+    ttk.Label(ventana_info, text="Consulta generada:", font=("Helvetica", 10, "bold"), background="#1e1e1e", foreground="#ffffff").pack(anchor="w", padx=10, pady=5)
+    analisis_text = tk.Text(ventana_info, height=3, width=60, font=("Helvetica", 10), bg="#2d2d2d", fg="#ffffff", insertbackground="#ffffff")
     analisis_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
     analisis_text.insert(tk.END, sentencia)
     analisis_text.config(state=tk.DISABLED)
 
-    ttk.Label(ventana_info, text="Datos filtrados:", font=("Helvetica", 10, "bold")).pack(anchor="w", padx=10, pady=5)
-    observaciones_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10))
+    ttk.Label(ventana_info, text="Datos filtrados:", font=("Helvetica", 10, "bold"), background="#1e1e1e", foreground="#ffffff").pack(anchor="w", padx=10, pady=5)
+    observaciones_text = tk.Text(ventana_info, height=4, width=60, font=("Helvetica", 10), bg="#2d2d2d", fg="#ffffff", insertbackground="#ffffff")
     observaciones_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
     observaciones_text.insert(tk.END, dataSet)
     observaciones_text.config(state=tk.DISABLED)
-
-
 
 
 # ---------------------------
