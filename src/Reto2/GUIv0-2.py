@@ -407,43 +407,171 @@ output_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 frame_inferior_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_inferior_derecha, height=200)
 
-#canvas_graficos = tk.Canvas(frame_inferior_derecha, bg="white")
-#canvas_graficos.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+# #canvas_graficos = tk.Canvas(frame_inferior_derecha, bg="white")
+# #canvas_graficos.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-# ----------------------------------------------------------------
-# Variable global para el proceso Dash
-dash_process = None
+# # ----------------------------------------------------------------
+# # Variable global para el proceso Dash
+# dash_process = None
 
-# Función para abrir el servidor Dash y navegador
-def open_browser():
-    global dash_process  # Hacer dash_process global para poder acceder y detenerlo
-    # Obtén la ruta completa del archivo GraficoV3.py
-    script_path = os.path.join(os.path.dirname(__file__), 'GraficoV3.py')
-    if os.path.exists(script_path):
-        # Usar subprocess para ejecutar el archivo Dash
-        dash_process = subprocess.Popen([sys.executable, script_path])
-        # Abrir el navegador automáticamente en la URL del servidor Dash
-        webbrowser.open("http://127.0.0.1:8050")  # Abre la URL en el navegador por defecto
-    else:
-        print("El archivo GraficoV3.py no se encuentra en la ruta esperada.")
+# # Función para abrir el servidor Dash y navegador
+# def open_browser():
+#     global dash_process  # Hacer dash_process global para poder acceder y detenerlo
+#     # Obtén la ruta completa del archivo GraficoV3.py
+#     script_path = os.path.join(os.path.dirname(__file__), 'GraficoV3.py')
+#     if os.path.exists(script_path):
+#         # Usar subprocess para ejecutar el archivo Dash
+#         dash_process = subprocess.Popen([sys.executable, script_path])
+#         # Abrir el navegador automáticamente en la URL del servidor Dash
+#         webbrowser.open("http://127.0.0.1:8050")  # Abre la URL en el navegador por defecto
+#     else:
+#         print("El archivo GraficoV3.py no se encuentra en la ruta esperada.")
 
-# Función para cerrar el servidor Dash cuando se cierre Tkinter
-def on_closing():
-    global dash_process
-    if dash_process:
-        dash_process.terminate()  # Termina el proceso del servidor Dash
-    root.destroy()  # Cierra la ventana de Tkinter
+# # Función para cerrar el servidor Dash cuando se cierre Tkinter
+# def on_closing():
+#     global dash_process
+#     if dash_process:
+#         dash_process.terminate()  # Termina el proceso del servidor Dash
+#     root.destroy()  # Cierra la ventana de Tkinter
 
-# Agregar el botón en la sección inferior
-btn_abrir_dashboard = ttk.Button(frame_inferior_derecha, text="Abrir Dashboard", command=open_browser)
-btn_abrir_dashboard.pack(side=tk.BOTTOM, padx=5, pady=5)
+# # Agregar el botón en la sección inferior
+# btn_abrir_dashboard = ttk.Button(frame_inferior_derecha, text="Abrir Dashboard", command=open_browser)
+# btn_abrir_dashboard.pack(side=tk.BOTTOM, padx=5, pady=5)
 
-# Configurar el cierre de la aplicación Tkinter
-root.protocol("WM_DELETE_WINDOW", on_closing)
+# # Configurar el cierre de la aplicación Tkinter
+# root.protocol("WM_DELETE_WINDOW", on_closing)
 
-# Crear botón justo debajo de output_text
-btn_mostrar_info = ttk.Button(frame_medio_derecha, text="Mostrar Información", command=abrir_info_output)
-btn_mostrar_info.pack(pady=5)  # Añade un pequeño espacio debajo
+# # Crear botón justo debajo de output_text
+# btn_mostrar_info = ttk.Button(frame_medio_derecha, text="Mostrar Información", command=abrir_info_output)
+# btn_mostrar_info.pack(pady=5)  # Añade un pequeño espacio debajo
+
+#--------------------------------------------------------------------
+#pip instal tkinterweb
+from plotly.offline import plot
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
+# Función para cargar los datos
+def cargar_datos(nombre_cohorte):
+    ruta_base = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    csv_file = os.path.join(ruta_base, 'src','Reto2','temp', nombre_cohorte)
+    df = pd.read_csv(csv_file)
+    return df
+
+# Función para crear gráfico de barras (histograma)
+def crear_histograma(df, columna):
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.hist(df[columna].dropna(), bins=10, color='skyblue', edgecolor='black')
+    ax.set_title(f'Distribución por {columna}')
+    ax.set_xlabel(columna)
+    ax.set_ylabel('Frecuencia')
+    return fig
+
+# Función para crear gráfico de líneas
+def crear_grafico_lineas(df, columna):
+    fig, ax = plt.subplots(figsize=(6, 4))
+    df = df.dropna(subset=[columna])  # Eliminar valores nulos
+    df = df.sort_values(by=columna)  # Ordenar los valores por la columna seleccionada
+
+    ax.plot(df[columna], marker='o', linestyle='-', color='b')
+    ax.set_title(f'Tendencia de {columna}')
+    ax.set_xlabel("Índice")
+    ax.set_ylabel(columna)
+    ax.grid(True)
+    return fig
+
+
+# Función para mostrar gráficos en una nueva ventana
+def mostrar_grafico_en_ventana(df):
+    global nueva_ventana
+    if "nueva_ventana" in globals() and nueva_ventana.winfo_exists():
+        nueva_ventana.lift()  # Traer la ventana al frente si ya existe
+        return
+
+    nueva_ventana = tk.Toplevel()
+    nueva_ventana.title("Gráficos")
+    nueva_ventana.geometry("900x600")
+
+    # Evitar que cerrar esta ventana afecte la principal
+    nueva_ventana.protocol("WM_DELETE_WINDOW", nueva_ventana.destroy)
+
+    # Crear Notebook en la nueva ventana
+    notebook = ttk.Notebook(nueva_ventana)
+    notebook.pack(fill=tk.BOTH, expand=True)
+
+    # Frame para selección de columna
+    frame_selector = ttk.Frame(nueva_ventana)
+    frame_selector.pack(fill=tk.X, padx=10, pady=10)
+
+    # Obtener columnas numéricas excluyendo "Pacientes ID"
+    columnas_numericas = df.select_dtypes(include=['number']).columns.tolist()
+    if "PacienteID" in columnas_numericas:
+        columnas_numericas.remove("PacienteID")
+
+    if not columnas_numericas:
+        messagebox.showerror("Error", "No hay columnas numéricas disponibles para filtrar.")
+        nueva_ventana.destroy()
+        return
+
+    label_combo = ttk.Label(frame_selector, text="Selecciona una columna:")
+    label_combo.pack(side=tk.LEFT, padx=5)
+
+    combo_columnas = ttk.Combobox(frame_selector, values=columnas_numericas, state="readonly")
+    combo_columnas.pack(side=tk.LEFT, padx=5)
+    combo_columnas.current(0)  # Seleccionar la primera opción
+
+    # Contenedor de gráficos
+    frame_graficos = ttk.Frame(nueva_ventana)
+    frame_graficos.pack(fill=tk.BOTH, expand=True)
+
+    notebook_hist = ttk.Frame(notebook)
+    notebook.add(notebook_hist, text="Histograma")
+
+    notebook_lineas = ttk.Frame(notebook)
+    notebook.add(notebook_lineas, text="Gráfico de Líneas")
+
+    # Función para actualizar los gráficos al cambiar la columna
+    def actualizar_graficos(event):
+        columna = combo_columnas.get()
+
+        for widget in notebook_hist.winfo_children():
+            widget.destroy()
+        for widget in notebook_lineas.winfo_children():
+            widget.destroy()
+
+        fig_hist = crear_histograma(df, columna)
+        canvas_hist = FigureCanvasTkAgg(fig_hist, master=notebook_hist)
+        canvas_hist.draw()
+        canvas_hist.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+        fig_lineas = crear_grafico_lineas(df, columna)
+        canvas_lineas = FigureCanvasTkAgg(fig_lineas, master=notebook_lineas)
+        canvas_lineas.draw()
+        canvas_lineas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+    combo_columnas.bind("<<ComboboxSelected>>", actualizar_graficos)
+
+    # Generar los gráficos por primera vez
+    actualizar_graficos(None)
+
+# Función para cerrar correctamente la ventana secundaria
+def cerrar_ventana(ventana):
+    ventana.destroy()
+
+# Función que se ejecuta al presionar el botón
+def on_button_click():
+    try:
+        df = cargar_datos('resultado.csv')
+        mostrar_grafico_en_ventana(df)
+    except Exception as e:
+        messagebox.showerror("Error", f"Ocurrió un error: {str(e)}")
+
+# Botón para generar los gráficos
+boton_generar = ttk.Button(frame_inferior_derecha, text="Generar Gráficos", command=lambda: on_button_click())
+boton_generar.pack(pady=20) #(side=tk.BOTTOM, padx=5, pady=5)
+
+# Manejar el cierre de la ventana principal
+root.protocol("WM_DELETE_WINDOW", root.quit)
 
 root.mainloop()
 
