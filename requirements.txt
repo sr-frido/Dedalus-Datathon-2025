@@ -9,5 +9,5 @@ openai
 transformers
 tk
 python-dotenv
-
+plotly
 pandas

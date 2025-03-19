@@ -110,6 +110,7 @@ def convertir_a_sql(consulta_natural):
               "Por defecto las sentencias mostraran todos los datos sobre los pacientes a no ser que se especifique lo contrario. " \
               "En algunos casos tendras una consulta ya existente y te pediran añadir datos o excluir datos de esa consulta, tenlo en cuenta. " \
               "Si la consulta que te llega es la palabra Error entonces vas a devulver un codigo sql que no haga completamente nada"
+
     
     # Realizar la solicitud al modelo
     response = client.chat.completions.create(
@@ -117,7 +118,5 @@ def convertir_a_sql(consulta_natural):
         messages=[{"role": "system", "content": context},
                   {"role": "user", "content": prompt}]
     )
-
-    print(prompt)
 
     return(response.choices[0].message.content.strip())
