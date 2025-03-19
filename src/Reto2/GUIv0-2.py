@@ -2,10 +2,7 @@
 # Imports
 # ---------------------------
 import os
-import sys
 import re
-import subprocess
-import webbrowser
 import tkinter as tk
 from tkinter import filedialog, scrolledtext, messagebox, Listbox
 from tkinter import ttk
@@ -141,7 +138,7 @@ def llamar_a_llm_bedrock(prompt):
         "Respuesta simulada del LLM.\n\n"
         f"Prompt recibido:\n{prompt}"
     )
-    return respuesta_simulada
+    # return respuesta_simulada
     """
     Placeholder para conexión real a AWS Bedrock o LiteLLM.
     """
@@ -444,49 +441,10 @@ output_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 frame_inferior_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_inferior_derecha, height=200)
 
-# #canvas_graficos = tk.Canvas(frame_inferior_derecha, bg="white")
-# #canvas_graficos.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
-
-# # ----------------------------------------------------------------
-# # Variable global para el proceso Dash
-# dash_process = None
-
-# # Función para abrir el servidor Dash y navegador
-# def open_browser():
-#     global dash_process  # Hacer dash_process global para poder acceder y detenerlo
-#     # Obtén la ruta completa del archivo GraficoV3.py
-#     script_path = os.path.join(os.path.dirname(__file__), 'GraficoV3.py')
-#     if os.path.exists(script_path):
-#         # Usar subprocess para ejecutar el archivo Dash
-#         dash_process = subprocess.Popen([sys.executable, script_path])
-#         # Abrir el navegador automáticamente en la URL del servidor Dash
-#         webbrowser.open("http://127.0.0.1:8050")  # Abre la URL en el navegador por defecto
-#     else:
-#         print("El archivo GraficoV3.py no se encuentra en la ruta esperada.")
-
-# # Función para cerrar el servidor Dash cuando se cierre Tkinter
-# def on_closing():
-#     global dash_process
-#     if dash_process:
-#         dash_process.terminate()  # Termina el proceso del servidor Dash
-#     root.destroy()  # Cierra la ventana de Tkinter
-
-# # Agregar el botón en la sección inferior
-# btn_abrir_dashboard = ttk.Button(frame_inferior_derecha, text="Abrir Dashboard", command=open_browser)
-# btn_abrir_dashboard.pack(side=tk.BOTTOM, padx=5, pady=5)
-
-# # Configurar el cierre de la aplicación Tkinter
-# root.protocol("WM_DELETE_WINDOW", on_closing)
-
-# # Crear botón justo debajo de output_text
-# btn_mostrar_info = ttk.Button(frame_medio_derecha, text="Mostrar Información", command=abrir_info_output)
-# btn_mostrar_info.pack(pady=5)  # Añade un pequeño espacio debajo
-
 #--------------------------------------------------------------------
-#pip instal tkinterweb
 from plotly.offline import plot
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
+import seaborn as sns
 
 # Función para cargar los datos
 def cargar_datos(nombre_cohorte):
@@ -495,26 +453,46 @@ def cargar_datos(nombre_cohorte):
     df = pd.read_csv(csv_file)
     return df
 
-# Función para crear gráfico de barras (histograma)
+# Función mejorada para crear gráfico de barras (histograma)
 def crear_histograma(df, columna):
-    fig, ax = plt.subplots(figsize=(6, 4))
-    ax.hist(df[columna].dropna(), bins=10, color='skyblue', edgecolor='black')
-    ax.set_title(f'Distribución por {columna}')
-    ax.set_xlabel(columna)
-    ax.set_ylabel('Frecuencia')
+    fig, ax = plt.subplots(figsize=(8, 5))  # Aumentar el tamaño del gráfico
+    # Estilo de Seaborn
+    sns.set_style("whitegrid")
+    # Definir bins en función del número de valores únicos (máximo 20)
+    bins = min(20, df[columna].nunique())
+    # Crear el histograma con mejoras visuales
+    ax.hist(df[columna].dropna(), bins=bins, color='royalblue', edgecolor='black', alpha=0.7)
+    # Mejorar etiquetas y título
+    ax.set_title(f'Distribución de {columna}', fontsize=14, fontweight='bold')
+    ax.set_xlabel(columna, fontsize=12)
+    ax.set_ylabel('Frecuencia', fontsize=12)
     return fig
 
-# Función para crear gráfico de líneas
-def crear_grafico_lineas(df, columna):
-    fig, ax = plt.subplots(figsize=(6, 4))
-    df = df.dropna(subset=[columna])  # Eliminar valores nulos
-    df = df.sort_values(by=columna)  # Ordenar los valores por la columna seleccionada
 
-    ax.plot(df[columna], marker='o', linestyle='-', color='b')
-    ax.set_title(f'Tendencia de {columna}')
-    ax.set_xlabel("Índice")
-    ax.set_ylabel(columna)
-    ax.grid(True)
+# Función mejorada para crear gráfico de líneas
+def crear_grafico_lineas(df, columna):
+    fig, ax = plt.subplots(figsize=(8, 5))  # Aumentar tamaño
+    # Eliminar valores nulos
+    df_filtrado = df.dropna(subset=[columna]).sort_values(by=columna)
+    # Estilo de Seaborn
+    sns.set_style("whitegrid")
+    # Graficar con línea más gruesa y puntos destacados
+    ax.plot(df_filtrado[columna], marker='o', linestyle='-', color='darkorange', linewidth=2, markersize=6)
+    # Mejorar etiquetas y título
+    ax.set_title(f'Tendencia de {columna}', fontsize=14, fontweight='bold')
+    ax.set_xlabel("Índice", fontsize=12)
+    ax.set_ylabel(columna, fontsize=12)
+    ax.grid(True, linestyle='--', alpha=0.6)  # Grid más suave    
+    return fig
+
+# Función para crear gráfico circular
+def crear_grafico_circular(df, columna):
+    fig, ax = plt.subplots(figsize=(8, 5))  # Aumentar tamaño
+    # Contar frecuencias de cada categoría
+    conteo = df[columna].value_counts()
+    # Crear gráfico de pastel
+    ax.pie(conteo, labels=conteo.index, autopct='%1.1f%%', colors=sns.color_palette("pastel"), startangle=90)
+    ax.set_title(f'Distribución de {columna}', fontsize=14, fontweight='bold')
     return fig
 
 
@@ -527,7 +505,9 @@ def mostrar_grafico_en_ventana(df):
 
     nueva_ventana = tk.Toplevel()
     nueva_ventana.title("Gráficos")
-    nueva_ventana.geometry("900x600")
+    nueva_ventana.geometry("900x600") 
+    nueva_ventana.config(bg="gray18")
+
 
     # Evitar que cerrar esta ventana afecte la principal
     nueva_ventana.protocol("WM_DELETE_WINDOW", nueva_ventana.destroy)
@@ -541,7 +521,7 @@ def mostrar_grafico_en_ventana(df):
     frame_selector.pack(fill=tk.X, padx=10, pady=10)
 
     # Obtener columnas numéricas excluyendo "Pacientes ID"
-    columnas_numericas = df.select_dtypes(include=['number']).columns.tolist()
+    columnas_numericas = df.columns.tolist()
     if "PacienteID" in columnas_numericas:
         columnas_numericas.remove("PacienteID")
 
@@ -567,6 +547,9 @@ def mostrar_grafico_en_ventana(df):
     notebook_lineas = ttk.Frame(notebook)
     notebook.add(notebook_lineas, text="Gráfico de Líneas")
 
+    notebook_pie = ttk.Frame(notebook)
+    notebook.add(notebook_pie, text="Gráfico Circular")
+
     # Función para actualizar los gráficos al cambiar la columna
     def actualizar_graficos(event):
         columna = combo_columnas.get()
@@ -575,6 +558,16 @@ def mostrar_grafico_en_ventana(df):
             widget.destroy()
         for widget in notebook_lineas.winfo_children():
             widget.destroy()
+        for widget in notebook_pie.winfo_children():
+            widget.destroy()
+
+        
+
+        # Graficar Circular si es categórico o tiene pocos valores únicos
+        fig_pie = crear_grafico_circular(df, columna)
+        canvas_pie = FigureCanvasTkAgg(fig_pie, master=notebook_pie)
+        canvas_pie.draw()
+        canvas_pie.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
         fig_hist = crear_histograma(df, columna)
         canvas_hist = FigureCanvasTkAgg(fig_hist, master=notebook_hist)
@@ -602,6 +595,7 @@ def on_button_click():
         mostrar_grafico_en_ventana(df)
     except Exception as e:
         messagebox.showerror("Error", f"Ocurrió un error: {str(e)}")
+
 
 # Botón para generar los gráficos
 boton_generar = ttk.Button(frame_inferior_derecha, text="Generar Gráficos", command=lambda: on_button_click())
