@@ -1,16 +1,20 @@
+# ---------------------------
+# Imports
+# ---------------------------
 import os
+import sys
+import re
+import subprocess
+import webbrowser
 import tkinter as tk
 from tkinter import filedialog, scrolledtext, messagebox, Listbox
 from tkinter import ttk
 import pandas as pd
 import matplotlib.pyplot as plt
-from aux_func_GUI import leer_lineas_no_vacias, listar_carpetas
-# --------------------------------------------------------------
-import webbrowser  # Necesitamos importar webbrowser
 import plotly.express as px
-import subprocess
-import sys
-# ------------------------------
+
+from aux_func_GUI import leer_lineas_no_vacias, listar_carpetas
+
 import shutil
 
 # ---------------------------
@@ -34,13 +38,12 @@ from gestion_csvs import *
 # ---------------------------
 # Configuración global y datos
 # ---------------------------
-template_file = "./src/Reto2/user-templates.txt"
-templates = leer_lineas_no_vacias(template_file)
-saved_cohorts_dir = "./src/Reto2/saved-cohorts"
-cohortes = listar_carpetas(saved_cohorts_dir)
-cohortes_guardados = {}
+template_file       = "./src/Reto2/user-templates.txt"
+saved_cohorts_dir   = "./src/Reto2/saved-cohorts"
+templates           = leer_lineas_no_vacias(template_file)
+cohortes            = listar_carpetas(saved_cohorts_dir)
+cohortes_guardados  = {}
 
-# Variables globales para el cohorte actual y los IDs extraídos
 current_cohort = None
 cohort_ids = []
 
@@ -51,7 +54,7 @@ dataSet = "Aún no hay información"
 
 
 # ---------------------------
-# Funciones para manejo de datos y LLM
+# Funciones de manejo de datos y LLM
 # ---------------------------
 def cargar_datos():
     directory = filedialog.askdirectory()
@@ -60,16 +63,32 @@ def cargar_datos():
         if not archivos_csv:
             messagebox.showwarning("Advertencia", "No se encontraron archivos CSV en la carpeta seleccionada.")
             return
-        
-        cohortes.clear()  # Limpia el diccionario para la nueva carga
+
+        cohortes.clear()
         for filename in archivos_csv:
             filepath = os.path.join(directory, filename)
             df = pd.read_csv(filepath)
             nombre_cohorte = os.path.splitext(filename)[0]
             cohortes[nombre_cohorte] = df
-        
+
         messagebox.showinfo("Carga exitosa", f"Se cargaron {len(cohortes)} CSVs en total.")
 
+
+def analizar_datos():
+    """Muestra un histograma de la columna 'edad' si está disponible."""
+    if "cohorte_pacientes" in cohortes:
+        df_pacientes = cohortes["cohorte_pacientes"]
+        if "edad" in df_pacientes.columns:
+            plt.figure(figsize=(6, 4))
+            df_pacientes["edad"].hist(bins=20, color='skyblue')
+            plt.xlabel("Edad")
+            plt.ylabel("Cantidad de Pacientes")
+            plt.title("Distribución de Edades (cohorte_pacientes)")
+            plt.show()
+        else:
+            messagebox.showwarning("Columna no encontrada", "El DataFrame 'cohorte_pacientes' no contiene la columna 'edad'.")
+    else:
+        messagebox.showerror("Error", "No existe 'cohorte_pacientes' en los datos cargados.")
 def reset():
     """
     Resetea el cohorte y los prompts
@@ -93,6 +112,7 @@ def reset():
     input_text.delete("1.0", tk.END)
     
 
+
 def guardar_cohorte():
     # Archivo de origen fijo
     origen = temp_csv  # Reemplaza con la ruta real
@@ -114,7 +134,14 @@ def guardar_cohorte():
     except Exception as e:
         messagebox.showerror("Error", f"No se pudo copiar el archivo: {e}")
 
+
 def llamar_a_llm_bedrock(prompt):
+    """Placeholder para conexión real a AWS Bedrock o LiteLLM."""
+    respuesta_simulada = (
+        "Respuesta simulada del LLM.\n\n"
+        f"Prompt recibido:\n{prompt}"
+    )
+    return respuesta_simulada
     """
     Placeholder para conexión real a AWS Bedrock o LiteLLM.
     """
@@ -134,11 +161,13 @@ def llamar_a_llm_bedrock(prompt):
 
     return respuesta_LLM
 
+
 def enviar_a_llm():
     prompt = input_text.get("1.0", tk.END).strip()
     if not prompt:
         messagebox.showwarning("Advertencia", "El prompt está vacío.")
         return
+
     
     
     output_text.config(state=tk.NORMAL)
@@ -148,11 +177,11 @@ def enviar_a_llm():
     output_text.update_idletasks()
 
     respuesta = llamar_a_llm_bedrock(prompt)
-    
     output_text.config(state=tk.NORMAL)
     output_text.delete("1.0", tk.END)
     output_text.insert(tk.END, respuesta)
     output_text.config(state=tk.DISABLED)
+
 
     input_text.delete("1.0", tk.END)
 
@@ -163,34 +192,33 @@ def on_template_select(event):
         input_text.delete("1.0", tk.END)
         input_text.insert(tk.END, template)
 
+
 def on_cohort_select(event):
-    import os
-    import re
-    from aux_func_GUI import leer_lineas_no_vacias
     global current_cohort, cohort_ids
 
     widget = event.widget
-    index = widget.nearest(event.y)
+    index  = widget.nearest(event.y)
     if index not in widget.curselection():
         return
 
     current_cohort = widget.get(index)
     cohorte_path = os.path.join(saved_cohorts_dir, current_cohort)
 
-    # Leer las plantillas específicas del cohorte y añadirlas al listbox de plantillas
+    # Plantillas específicas del cohorte
     plantillas_file = os.path.join(cohorte_path, "cohort_templates.txt")
     cohort_templates = leer_lineas_no_vacias(plantillas_file)
     for plantilla in cohort_templates:
         listbox_templates.insert(tk.END, plantilla)
 
-    # Leer el log del cohorte para extraer los IDs
+    # Extraer IDs desde log del cohorte
     log_file = os.path.join(cohorte_path, "cohort_log.txt")
-    lineas = leer_lineas_no_vacias(log_file)
+    lineas   = leer_lineas_no_vacias(log_file)
     contenido = " ".join(lineas)
+
     match = re.search(r"\{([^}]+)\}", contenido)
     if match:
-        ids_str = match.group(1)
-        ids_lista = [valor.strip() for valor in ids_str.split(",") if valor.strip()]
+        ids_str        = match.group(1)
+        ids_lista      = [valor.strip() for valor in ids_str.split(",") if valor.strip()]
         ids_convertidos = []
         for valor in ids_lista:
             try:
@@ -217,16 +245,13 @@ def exit_cohort():
 
 
 def add_template():
-    from tkinter import simpledialog, messagebox
-    import os
-    global current_cohort
+    from tkinter import simpledialog
 
-    # Solicitar al usuario el texto de la nueva plantilla
+    global current_cohort
     nueva_plantilla = simpledialog.askstring("Nueva Plantilla", "Introduce el texto de la nueva plantilla:")
     if not nueva_plantilla:
         return
 
-    # Si se está en un cohorte (current_cohort no es None), preguntar si se desea agregar al cohorte actual
     if current_cohort is not None:
         respuesta = messagebox.askyesno("Agregar a Cohorte", "¿Deseas agregar esta plantilla al cohorte actual?")
         if respuesta:
@@ -241,7 +266,6 @@ def add_template():
                 messagebox.showerror("Error", f"No se pudo agregar la plantilla al cohorte: {e}")
             return
 
-    # Si no se está en un cohorte o se decide no agregarlo al cohorte, agregar al fichero de templates del usuario
     try:
         with open(template_file, "a", encoding="utf-8") as f:
             f.write(nueva_plantilla + "\n")
@@ -281,12 +305,12 @@ def abrir_info_output():
 
 
 # ---------------------------
-# Configuración de la ventana principal y estilos
+# Configuración de la ventana principal y estilos 
 # ---------------------------
 root = tk.Tk()
 root.title("Agente de Salud para Identificación de Cohortes")
 root.geometry("1000x600")
-root.configure(bg="#f0f0f0")
+root.configure(bg="#2e2e2e")
 
 # Obtener el tamaño de la pantalla y ajustar la ventana
 screen_width = root.winfo_screenwidth()
@@ -299,16 +323,32 @@ root.bind("<Escape>", lambda event: root.geometry("1000x600"))  # Regresar al ta
 # Usamos ttk para un aspecto más moderno
 style = ttk.Style()
 style.theme_use("clam")
-style.configure("TFrame", background="#f0f0f0")
-style.configure("TLabel", background="#f0f0f0", font=("Helvetica", 10))
-style.configure("TButton", font=("Helvetica", 10), padding=5)
+
+# Paleta de colores oscuros
+bg_dark = "#2e2e2e"
+bg_frame = "#1e1e1e"
+fg_text = "#ffffff"
+accent = "#3c3c3c"
+
+# Estilo para frames y widgets
+style.configure("TFrame", background=bg_frame)
+style.configure("TLabel", background=bg_frame, foreground=fg_text, font=("Segoe UI", 10))
+style.configure("TButton", background=accent, foreground=fg_text, font=("Segoe UI", 10), padding=6)
+style.map("TButton",
+          background=[("active", "#505050")],
+          foreground=[("active", "#ffffff")])
+
 
 # ---------------------------
-# Frame superior: botones principales
+# Frame superior: Botones principales
 # ---------------------------
 frame_superior = ttk.Frame(root, padding=10)
 frame_superior.pack(fill=tk.X)
 
+btn_cargar  = ttk.Button(frame_superior, text="Cargar Datos", command=cargar_datos)
+btn_guardar = ttk.Button(frame_superior, text="Guardar como Cohorte", command=guardar_cohorte)
+
+btn_cargar.pack(side=tk.LEFT, padx=5)
 """
 btn_cargar = ttk.Button(frame_superior, text="Cargar Datos", command=cargar_datos)
 btn_cargar.pack(side=tk.LEFT, padx=5)
@@ -319,49 +359,45 @@ btn_guardar = ttk.Button(frame_superior, text="Guardar como cohorte", command=gu
 btn_guardar.pack(side=tk.LEFT, padx=5)
 
 # ---------------------------
-# PanedWindow principal para dividir en panel izquierdo y derecho
+# PanedWindow principal
 # ---------------------------
-pw_horizontal = tk.PanedWindow(root, orient=tk.HORIZONTAL, bg="#f0f0f0", sashwidth=5)
+pw_horizontal = tk.PanedWindow(root, orient=tk.HORIZONTAL, bg=bg_dark, sashwidth=5, sashrelief=tk.FLAT, sashpad=0)
 pw_horizontal.pack(fill=tk.BOTH, expand=True)
 
-# ---------------------------
-# PANEL IZQUIERDO: PanedWindow vertical para plantillas y cohortes guardados
-# ---------------------------
-pw_left = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg="#f0f0f0", sashwidth=5)
+# PANEL IZQUIERDO
+pw_left = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg=bg_dark, sashwidth=5, sashrelief=tk.FLAT, sashpad=0)
 pw_horizontal.add(pw_left, width=300)
 
-# Sección de plantillas
+# Plantillas
 frame_templates = ttk.Frame(pw_left, padding=10)
 pw_left.add(frame_templates, height=200)
 
-# Crear un frame para colocar la etiqueta y el botón en la misma línea
 frame_header = ttk.Frame(frame_templates)
 frame_header.pack(fill=tk.X)
 
 label_templates = ttk.Label(frame_header, text="Plantillas:")
-label_templates.pack(side=tk.LEFT, padx=(0, 5))
-
 btn_add_template = ttk.Button(frame_header, text="+", command=add_template, width=3)
+
+label_templates.pack(side=tk.LEFT, padx=(0, 5))
 btn_add_template.pack(side=tk.LEFT)
 
-listbox_templates = Listbox(frame_templates, height=10, font=("Helvetica", 10))
+listbox_templates = Listbox(frame_templates, height=10, font=("Segoe UI", 10),
+                            bg=bg_dark, fg=fg_text, selectbackground=accent, selectforeground=fg_text, relief=tk.FLAT)
 listbox_templates.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
-
 
 for t in templates:
     listbox_templates.insert(tk.END, t)
 listbox_templates.bind("<<ListboxSelect>>", on_template_select)
 
-
-# Sección de cohortes guardados
+# Cohortes guardados
 frame_cohortes = ttk.Frame(pw_left, padding=10)
 pw_left.add(frame_cohortes, height=200)
 
-
 label_cohortes = ttk.Label(frame_cohortes, text="Cohortes guardados:")
-label_cohortes.pack(anchor="w", padx=5, pady=(0,5))
+label_cohortes.pack(anchor="w", padx=5, pady=(0, 5))
 
-listbox_cohortes = Listbox(frame_cohortes, height=10, font=("Helvetica", 10))
+listbox_cohortes = Listbox(frame_cohortes, height=10, font=("Segoe UI", 10),
+                           bg=bg_dark, fg=fg_text, selectbackground=accent, selectforeground=fg_text, relief=tk.FLAT)
 listbox_cohortes.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 for t in cohortes:
@@ -371,23 +407,22 @@ listbox_cohortes.bind("<<ListboxSelect>>", on_cohort_select)
 btn_exit_cohort = ttk.Button(frame_cohortes, text="Salir Cohorte", command=exit_cohort)
 btn_exit_cohort.pack(pady=5)
 
-# ---------------------------
-# PANEL DERECHO: PanedWindow vertical para entrada, salida y gráficos
-# ---------------------------
-pw_right = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg="#f0f0f0", sashwidth=5)
+# PANEL DERECHO
+pw_right = tk.PanedWindow(pw_horizontal, orient=tk.VERTICAL, bg=bg_dark, sashwidth=5, sashrelief=tk.FLAT, sashpad=0)
 pw_horizontal.add(pw_right, stretch="always")
 
-# Sección superior: Entrada de prompt para LLM
+# Entrada LLM
 frame_superior_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_superior_derecha, height=100)
 
 label_input = ttk.Label(frame_superior_derecha, text="Consulta para cohorte:")
 label_input.pack(anchor="w", padx=5, pady=(0,5))
 
-input_text = scrolledtext.ScrolledText(frame_superior_derecha, width=80, height=5, font=("Helvetica", 10))
+input_text = scrolledtext.ScrolledText(frame_superior_derecha, width=80, height=5,
+                                       font=("Segoe UI", 10), bg=bg_dark, fg=fg_text, insertbackground=fg_text)
 input_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-# Sección media: Botones y salida del LLM
+# Salida y análisis
 frame_medio_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_medio_derecha, height=260)
 
@@ -398,12 +433,14 @@ btn_reset = ttk.Button(frame_medio_derecha, text="Reset", command=reset)
 btn_reset.pack(fill=tk.X, padx=5, pady=5)
 
 label_output = ttk.Label(frame_medio_derecha, text="Respuesta del Sistema:")
-label_output.pack(anchor="w", padx=5, pady=(10,5))
+label_output.pack(anchor="w", padx=5, pady=(10, 5))
 
-output_text = scrolledtext.ScrolledText(frame_medio_derecha, width=80, height=5, state=tk.DISABLED, font=("Helvetica", 10), wrap="word")
+output_text = scrolledtext.ScrolledText(frame_medio_derecha, width=80, height=5,
+                                        state=tk.DISABLED, font=("Segoe UI", 10),
+                                        bg=bg_dark, fg=fg_text, insertbackground=fg_text)
 output_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-# Sección inferior: Área de gráficos o resultados visuales
+# Gráficos y dashboard
 frame_inferior_derecha = ttk.Frame(pw_right, padding=10)
 pw_right.add(frame_inferior_derecha, height=200)
 
