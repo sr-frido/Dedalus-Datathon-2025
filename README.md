@@ -98,11 +98,8 @@ Si deseas contribuir al proyecto, sigue estos pasos:
 
 ## 👥 Participantes
 - Juan de Dios Alfaro López
-
-     [![LinkedIn](https://img.shields.io/badge/LinkedIn-alfarojdd-blue?logo=linkedin)](https://www.linkedin.com/in/alfarojdd/)\n
-     [![Email](https://img.shields.io/badge/Email-alfaro.jdd@gmail.com-red?logo=gmail)](mailto:alfaro.jdd@gmail.com)
-  
-     [![GitHub](https://img.shields.io/badge/GitHub-alfarojdd-black?logo=github)](https://github.com/alfarojdd)
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-alfarojdd-blue?logo=linkedin)](https://www.linkedin.com/in/alfarojdd/)
+  [![GitHub](https://img.shields.io/badge/GitHub-alfarojdd-black?logo=github)](https://github.com/alfarojdd)
 
 ## 📧 Contacto
 Si tienes dudas o sugerencias, contáctanos en [alfaro.jdd@gmail.com](mailto:alfaro.jdd@gmail.com).
