@@ -102,7 +102,7 @@ Si deseas contribuir al proyecto, sigue estos pasos:
   [![GitHub](https://img.shields.io/badge/GitHub-alfarojdd-black?logo=github)](https://github.com/alfarojdd)
 - Sigfrido José Molina Nicola
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-Sigfrido_José_Molina_Nicola-blue?logo=linkedin)](https://www.linkedin.com/in/sigfrido-josé-molina-nicola-28a84122b/)
-  [![GitHub](https://img.shields.io/badge/GitHub-sr-frido-black?logo=github)](https://github.com/sr-frido)
+  [![GitHub](https://img.shields.io/badge/GitHub-sr_frido-black?logo=github)](https://github.com/sr-frido)
 
 ## 📧 Contacto
 Si tienes dudas o sugerencias, contáctanos en [alfaro.jdd@gmail.com](mailto:alfaro.jdd@gmail.com).
