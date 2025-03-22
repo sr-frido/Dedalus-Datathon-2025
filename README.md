@@ -97,7 +97,7 @@ Si deseas contribuir al proyecto, sigue estos pasos:
 ---
 
 ## 👥 Participantes
-- **Juan de Dios Alfaro López**
+- Juan de Dios Alfaro López
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-alfarojdd-blue?logo=linkedin)](https://www.linkedin.com/in/alfarojdd/)
   [![GitHub](https://img.shields.io/badge/GitHub-alfarojdd-black?logo=github)](https://github.com/alfarojdd)
 
