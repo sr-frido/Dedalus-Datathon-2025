@@ -110,5 +110,3 @@ Si deseas contribuir al proyecto, sigue estos pasos:
 ## 📧 Contacto
 Si tienes dudas o sugerencias, contáctanos en [alfaro.jdd@gmail.com](mailto:alfaro.jdd@gmail.com).
 
-¡Gracias por contribuir a mejorar la salud con IA! 💡🚀
-
