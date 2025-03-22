@@ -89,16 +89,19 @@ Si deseas contribuir al proyecto, sigue estos pasos:
    ```
 
 ### Reglas de Contribución
-✅ Usa nombres de rama descriptivos (`feature/nueva-funcionalidad` o `fix/arreglo-bug`) 
-✅ Escribe commits claros y concisos 
-✅ Añade documentación si aplicas cambios significativos 
-✅ No hacer push directamente a `main`
+ ✅ Usa nombres de rama descriptivos (`feature/nueva-funcionalidad` o `fix/arreglo-bug`) 
+ ✅ Escribe commits claros y concisos 
+ ✅ Añade documentación si aplicas cambios significativos 
+ ✅ No hacer push directamente a `main`
 
 ---
 
 ## 👥 Participantes
 - Juan de Dios Alfaro López
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-alfarojdd-blue?logo=linkedin)](https://www.linkedin.com/in/alfarojdd/)
+  [![GitHub](https://img.shields.io/badge/GitHub-alfarojdd-black?logo=github)](https://github.com/alfarojdd)
+- Sigfrido José Molina Nicola
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-Sigfrido_José_Molina_Nicola-blue?logo=linkedin)](https://www.linkedin.com/in/sigfrido-josé-molina-nicola-28a84122b/)
   [![GitHub](https://img.shields.io/badge/GitHub-alfarojdd-black?logo=github)](https://github.com/alfarojdd)
 
 ## 📧 Contacto
