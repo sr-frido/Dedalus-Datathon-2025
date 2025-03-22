@@ -5,8 +5,6 @@ Este proyecto forma parte de la Datathon de Dedalus y tiene como objetivo el des
 
 ## 🚀 Tecnologías
 - **Lenguaje de programación**: Python
-- **Frameworks y librerías**: A determinar
-- **Bases de datos**: A determinar 
 - **Herramientas de desarrollo**: Git
 
 ---
