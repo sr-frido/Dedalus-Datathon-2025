@@ -103,6 +103,9 @@ Si deseas contribuir al proyecto, sigue estos pasos:
 - Sigfrido José Molina Nicola
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-Sigfrido_José_Molina_Nicola-blue?logo=linkedin)](https://www.linkedin.com/in/sigfrido-josé-molina-nicola-28a84122b/)
   [![GitHub](https://img.shields.io/badge/GitHub-sr_frido-black?logo=github)](https://github.com/sr-frido)
+- Jorge ramirez Zotano
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-Jorge-blue?logo=linkedin)](https://www.linkedin.com/in/jorge-ramirez-zotano-600b682bb/)
+  [![GitHub](https://img.shields.io/badge/GitHub-JorgeRZ113-black?logo=github)](https://github.com/JorgeRZ113)
 
 ## 📧 Contacto
 Si tienes dudas o sugerencias, contáctanos en [alfaro.jdd@gmail.com](mailto:alfaro.jdd@gmail.com).
