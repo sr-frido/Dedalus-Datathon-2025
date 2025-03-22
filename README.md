@@ -11,20 +11,6 @@ Este proyecto forma parte de la Datathon de Dedalus y tiene como objetivo el des
 
 ---
 
-## 📂 Estructura del Proyecto
-```
-📦 Dedalus-Datathon-2025
- ┣ 📂 Datos sintéticos reto 1               # Datos de entrenamiento y prueba del reto 1
- ┣ 📂 Datos sintéticos reto 2               # Datos de entrenamiento y prueba del reto 2
- ┣ 📂 src                                   # Código fuente
-    ┗ 📂 Reto2
-        ┗ 📜 GUI.py
- ┣ 📜 README.md                             # Documentación del proyecto
- ┗ 📜 requirements.txt                      # Dependencias del proyecto
-```
-
----
-
 ## 📌 Instalación y Configuración
 
 1. **Clonar el repositorio**
